@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dpone">16dp</dimen>
+    <dimen name="spone">22sp</dimen>
+    <dimen name="dptwo">0dp</dimen>
+    <dimen name="sptwo">16sp</dimen>
+    <dimen name="spthree">8sp</dimen>
+    <dimen name="dpthree">20dp</dimen>
+    <dimen name="one">1</dimen>
+    <dimen name="dpfour">13dp</dimen>
+</resources>
