@@ -6,4 +6,7 @@
     <color name="iconcolor">#1A1B22</color>
     <color name="grey">#AEAFB4</color>
     <color name="colorfortrack">#E6E8EB</color>
+    <color name="colorsettingsbtn">#000000</color>
+    <color name="thumbTint">#AEAFB4</color>
+    <color name="transparent">#00000000</color>
 </resources>

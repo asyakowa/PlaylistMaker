@@ -37,13 +37,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="false"
+        android:trackTint="@color/colorfortrack"
+        android:thumbTint="@color/thumbTint"
         android:layout_gravity="end"
         android:padding="@dimen/dpfour"
 
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/dpthree"
         android:text="@string/blacktheme"
         android:fontFamily="sans-serif"
-        android:textColor="@color/black"
+        android:textColor="@color/colorsettingsbtn"
         android:textAllCaps="false"
         android:textSize="@dimen/sptwo"
         />
@@ -51,46 +53,44 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:background="@color/transparent"
         android:drawableEnd="@drawable/share"
         android:drawableTint="@color/grey"
-        android:gravity="start"
-
+        android:gravity="center_vertical"
         android:text="@string/share"
         android:fontFamily="sans-serif"
         android:paddingStart="@dimen/dpfour"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/colorsettingsbtn"
         android:textSize="@dimen/sptwo"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/transparent"
         android:drawableEnd="@drawable/support"
         android:drawableTint="@color/grey"
-        android:backgroundTint="@color/white"
+
+        android:gravity="center_vertical"
         android:text="@string/texttosupport"
         android:fontFamily="sans-serif"
         android:paddingStart="@dimen/dpfour"
-        android:gravity="start"
         android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="@dimen/sptwo"
-
-
-        />
+        android:textColor="@color/colorsettingsbtn"
+        android:textSize="@dimen/sptwo"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/transparent"
         android:drawableEnd="@drawable/ua"
         android:drawableTint="@color/grey"
-        android:backgroundTint="@color/white"
+
+        android:gravity="center_vertical"
         android:text="@string/useragreement"
         android:fontFamily="sans-serif"
         android:paddingStart="@dimen/dpfour"
-        android:gravity="start"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/colorsettingsbtn"
         android:textSize="@dimen/sptwo"/>
 </LinearLayout>
