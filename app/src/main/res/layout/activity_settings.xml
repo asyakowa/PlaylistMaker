@@ -2,7 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/LLstyleStns"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -24,7 +23,7 @@
 
         <TextView
             android:text="@string/app_settings"
-            android:fontFamily="@font/ys_display_regular"
+            android:fontFamily="@font/ys_display_medium"
             style="@style/MainTextinActivitySettings" />
     </LinearLayout>
 
@@ -34,19 +33,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="false"
+        android:fontFamily="@font/ys_display_regular"
+        android:textSize="@dimen/sptwo"
         android:layout_marginTop="@dimen/dpthree"
         android:text="@string/blacktheme"
         android:padding="@dimen/dpfour"
         android:paddingEnd="-3dp"
         style="@style/CustomSwitch"
-
         />
 
     <Button
         android:id="@+id/share"
         android:drawableEnd="@drawable/share"
         android:text="@string/share"
-
         style="@style/BtnSettings" />
 
     <Button
