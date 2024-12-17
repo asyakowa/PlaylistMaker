@@ -8,4 +8,9 @@
     <string name="texttosupport">Написать в поддержку</string>
     <string name="bckbt">Кнопка Назад</string>
     <string name="useragreement">Пользовательское соглашение</string>
+    <string name="linkforad">https://practicum.yandex.ru/android-developer/</string>
+    <string name="linkfoua">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="messagefoad">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="thanksforad">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="email">muriona@yandex.ru</string>
 </resources>

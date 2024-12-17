@@ -6,14 +6,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name="iconcolor">#1A1B22</color>
     <color name="grey">#AEAFB4</color>
-    <color name="colorfortrack">#E6E8EB</color>
+    <color name="colorfortrack">#9FBBF3</color>
     <color name="colorsettingsbtn">#000000</color>
-    <color name="thumbTint">#AEAFB4</color>
+    <color name="thumbTint">#3772E7</color>
     <color name="transparent">#00000000</color>
     <color name="lightblue">#9FBBF3</color>
-    <color name="backbutton_tint">#1A1B22</color>
-    <color name="backgroundTintsettings">#E6E8EB</color>
+    <color name="backbutton_tint">#FFFFFF</color>
+    <color name="backgroundTintsettings">#FFFFFF</color>
     <color name="searchColorBtn">#E6E8EB</color>
-    <color name="searchBack">#FFFFFFFF</color>
-    <color name="textColorHint">#AEAFB4</color>
+    <color name="searchBack">#1A1B22</color>
+    <color name="textColorHint">#1A1B22</color>
 </resources>
