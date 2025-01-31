@@ -18,45 +18,54 @@
             android:layout_height="wrap_content"
             android:src="@drawable/backbtn"
             android:contentDescription="@string/bckbt"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="@dimen/dpsix"
             app:tint="@color/backbutton_tint" />
 
         <TextView
             android:text="@string/app_settings"
+            android:paddingStart="@dimen/dpsix"
+            android:gravity="center_vertical"
             android:fontFamily="@font/ys_display_medium"
             style="@style/MainTextinActivitySettings" />
     </LinearLayout>
 
-
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/theme_switch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="61dp"
         android:checked="false"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="@dimen/sptwo"
-        android:layout_marginTop="@dimen/dpthree"
+        android:layout_marginTop="14dp"
         android:text="@string/blacktheme"
-        android:padding="@dimen/dpfour"
-        android:paddingEnd="-3dp"
-        style="@style/CustomSwitch"
+        android:textAllCaps="false"
+        android:gravity="center_vertical"
+        android:background="@color/transparent"
+        app:trackTint="@color/colorfortrack"
+        app:thumbTint="@color/thumbTint"
+        android:paddingEnd="@dimen/dptwo"
+
         />
+
 
     <Button
         android:id="@+id/share"
         android:drawableEnd="@drawable/share"
         android:text="@string/share"
+        android:gravity="center_vertical"
         style="@style/BtnSettings" />
 
     <Button
         android:id="@+id/talktosupport"
-        style="@style/BtnSettings"
         android:drawableEnd="@drawable/support"
-        android:text="@string/texttosupport" />
+        android:text="@string/texttosupport"
+        android:gravity="center_vertical"
+        style="@style/BtnSettings" />
 
     <Button
         android:id="@+id/usag"
-        style="@style/BtnSettings"
         android:drawableEnd="@drawable/ua"
-        android:text="@string/useragreement" />
+        android:text="@string/useragreement"
+        android:gravity="center_vertical"
+        style="@style/BtnSettings" />
 </LinearLayout>
