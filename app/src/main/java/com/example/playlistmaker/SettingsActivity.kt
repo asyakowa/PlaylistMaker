@@ -16,7 +16,6 @@ class SettingsActivity : Activity() {
         val backButton = findViewById<ImageView>(R.id.backbutton)
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
             finish()
         }
         val shareButton= findViewById<Button>(R.id.share)

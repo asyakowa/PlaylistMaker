@@ -16,4 +16,5 @@
     <color name="searchColorBtn">#E6E8EB</color>
     <color name="searchBack">#1A1B22</color>
     <color name="textColorHint">#1A1B22</color>
+    <color name="clearicon">#1A1B22</color>
 </resources>
