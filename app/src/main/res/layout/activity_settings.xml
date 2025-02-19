@@ -1,63 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/LLstyleStns"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_height="@dimen/dpseven"
 
+
+
+        android:gravity="center_vertical">
         <androidx.appcompat.widget.AppCompatImageView
+
+
             android:id="@+id/backbutton"
+            android:padding="@dimen/dpthree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/backbtn"
             android:contentDescription="@string/bckbt"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="@dimen/dpeight"
             app:tint="@color/backbutton_tint" />
+
 
         <TextView
             android:text="@string/app_settings"
-            android:fontFamily="@font/ys_display_regular"
-            style="@style/MainTextinActivitySettings" />
+
+
+            android:fontFamily="@font/ys_display_medium"
+            style="@style/MainTextinActivitySettings"
+            />
     </LinearLayout>
 
-
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/theme_switch"
+    <LinearLayout
+        android:paddingTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="false"
-        android:layout_marginTop="@dimen/dpthree"
-        android:text="@string/blacktheme"
-        android:padding="@dimen/dpfour"
-        android:paddingEnd="-3dp"
-        style="@style/CustomSwitch"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dpone">
 
-        />
+        <com.google.android.material.switchmaterial.SwitchMaterial
 
-    <Button
-        android:id="@+id/share"
-        android:drawableEnd="@drawable/share"
-        android:text="@string/share"
+            android:id="@+id/theme_switch"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:checked="false"
+            android:fontFamily="@font/ys_display_regular"
+            android:textSize="@dimen/sptwo"
+            android:text="@string/blacktheme"
+            android:textAllCaps="false"
+            android:gravity="center_vertical"
+            android:background="@color/transparent"
+            app:trackTint="@color/colorfortrack"
+            app:thumbTint="@color/thumbTint"
 
-        style="@style/BtnSettings" />
+            android:paddingEnd="@dimen/dpeight" />
 
-    <Button
-        android:id="@+id/talktosupport"
-        style="@style/BtnSettings"
-        android:drawableEnd="@drawable/support"
-        android:text="@string/texttosupport" />
+        <Button
+            android:id="@+id/share"
+            android:paddingEnd="@dimen/dpsix"
+            android:drawableEnd="@drawable/share"
+            android:text="@string/share"
+            android:gravity="center_vertical"
+            style="@style/BtnSettings" />
 
-    <Button
-        android:id="@+id/usag"
-        style="@style/BtnSettings"
-        android:drawableEnd="@drawable/ua"
-        android:text="@string/useragreement" />
+        <Button
+            android:id="@+id/talktosupport"
+            android:paddingEnd="10dp"
+            android:drawableEnd="@drawable/support"
+            android:text="@string/texttosupport"
+            android:gravity="center_vertical"
+            style="@style/BtnSettings" />
+
+        <Button
+            android:id="@+id/usag"
+            android:paddingEnd="@dimen/dpthree"
+            android:drawableEnd="@drawable/ua"
+
+            android:text="@string/useragreement"
+            android:gravity="center_vertical"
+            style="@style/BtnSettings" />
+    </LinearLayout>
 </LinearLayout>

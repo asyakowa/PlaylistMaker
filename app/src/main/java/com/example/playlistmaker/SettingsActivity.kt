@@ -16,10 +16,11 @@ class SettingsActivity : Activity() {
         val backButton = findViewById<ImageView>(R.id.backbutton)
         backButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
             finish()
         }
-val shareButton= findViewById<Button>(R.id.share)
+
+        val shareButton= findViewById<Button>(R.id.share)
+
         val talkToSupport= findViewById<Button>(R.id.talktosupport)
         val uaButton=findViewById<Button>(R.id.usag)
         talkToSupport.setOnClickListener {
@@ -43,13 +44,10 @@ val shareButton= findViewById<Button>(R.id.share)
             startActivity(Intent.createChooser(shareIntent, null))
         }
 
-
         uaButton.setOnClickListener {
             val linkToOpen =  getString(R.string.linkfoua)
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(linkToOpen))
             startActivity(browserIntent)
         }
-
     }
 }
-
