@@ -18,7 +18,9 @@ class SettingsActivity : Activity() {
             val intent = Intent(this, MainActivity::class.java)
             finish()
         }
+
         val shareButton= findViewById<Button>(R.id.share)
+
         val talkToSupport= findViewById<Button>(R.id.talktosupport)
         val uaButton=findViewById<Button>(R.id.usag)
         talkToSupport.setOnClickListener {
@@ -38,8 +40,10 @@ class SettingsActivity : Activity() {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, linkToShare)
             }
+
             startActivity(Intent.createChooser(shareIntent, null))
         }
+
         uaButton.setOnClickListener {
             val linkToOpen =  getString(R.string.linkfoua)
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(linkToOpen))
