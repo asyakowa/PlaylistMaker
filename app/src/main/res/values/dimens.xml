@@ -12,4 +12,7 @@
     <dimen name="dpsix">12dp</dimen>
     <dimen name="dpseven">56dp</dimen>
     <dimen name="dpeight">6dp</dimen>
+    <dimen name="dpnine">45dp</dimen>
+    <dimen name="spfour">11sp</dimen>
+    <dimen name="dpten">5dp</dimen>
 </resources>
