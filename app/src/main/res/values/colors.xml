@@ -17,4 +17,5 @@
     <color name="searchBack">#FFFFFFFF</color>
     <color name="textColorHint">#AEAFB4</color>
     <color name="clearicon">#AEAFB4</color>
+    <color name="songname">#000000</color>
 </resources>

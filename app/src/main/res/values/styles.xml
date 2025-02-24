@@ -87,5 +87,20 @@
 
     </style>
 
+    <style name="SongName" >
+        <item name="android:textColor">@color/songname</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/sptwo</item>
+    </style>
+    <style name="SingerName" >
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">@dimen/spfour</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+    <style name="TrackTime" >
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">@dimen/spfour</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
 
+    </style>
 </resources>
