@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
@@ -14,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         // 1 кнопка
         val searchButton = findViewById<Button>(R.id.se)
         searchButton.setOnClickListener {
-            val displayIntent = Intent(this, SearchActivity::class.java)
+            val displayIntent = Intent(this, SearchActivityyy::class.java)
             startActivity(displayIntent)
         }
 
