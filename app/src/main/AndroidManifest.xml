@@ -14,7 +14,7 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".SearchActivityyy"
+            android:name=".SearchActivity"
             android:exported="true" />
         <activity
             android:name=".MediaActivity"

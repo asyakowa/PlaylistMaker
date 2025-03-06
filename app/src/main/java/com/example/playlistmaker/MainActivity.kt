@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         // 1 кнопка
         val searchButton = findViewById<Button>(R.id.se)
         searchButton.setOnClickListener {
-            val displayIntent = Intent(this, SearchActivityyy::class.java)
+            val displayIntent = Intent(this, SearchActivity::class.java)
             startActivity(displayIntent)
         }
 

@@ -16,7 +16,7 @@
     <string name="err_srch">Ничего не нашлось</string>
     <string name="error_cnn">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
-    <string name="no_last_query">Запросов ранее не было\n</string>
+
 
 
 </resources>
