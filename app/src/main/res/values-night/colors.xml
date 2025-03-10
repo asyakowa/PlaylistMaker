@@ -18,4 +18,8 @@
     <color name="textColorHint">#1A1B22</color>
     <color name="clearicon">#1A1B22</color>
     <color name="songname">#FFFFFF</color>
+    <color name="placeholderTextColor">#FFFFFF</color>
+    <color name="updatebtTextColor">#1A1B22</color>
+    <color name="updatebtbackgroundTintColor">#FFFFFF</color>
+
 </resources>
