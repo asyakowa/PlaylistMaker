@@ -21,4 +21,7 @@
     <color name="placeholderTextColor">#1A1B22</color>
     <color name="updatebtTextColor">#FFFFFFFF</color>
     <color name="updatebtbackgroundTintColor">#1A1B22</color>
+    <color name="clearHistoryBtnText">#FFFFFF</color>
+    <color name="clearHistoryBtnBckdTint">#1A1B22</color>
+    <color name="searchHistory">#1A1B22</color>
 </resources>

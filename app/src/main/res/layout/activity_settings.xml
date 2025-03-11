@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/backbtn"
             android:contentDescription="@string/bckbt"
-            android:layout_marginEnd="@dimen/dpeight"
+            android:layout_marginEnd="@dimen/size_6dp"
             app:tint="@color/backbutton_tint" />
 
 
@@ -45,7 +45,7 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
 
-            android:id="@+id/theme_switch"
+            android:id="@+id/theme_switcher"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_61dp"
             android:checked="false"
@@ -58,11 +58,11 @@
             app:trackTint="@color/colorfortrack"
             app:thumbTint="@color/thumbTint"
 
-            android:paddingEnd="@dimen/dpeight" />
+            android:paddingEnd="@dimen/size_6dp" />
 
         <Button
             android:id="@+id/share"
-            android:paddingEnd="@dimen/dpsix"
+            android:paddingEnd="@dimen/size_12dp"
             android:drawableEnd="@drawable/share"
             android:text="@string/share"
             android:gravity="center_vertical"
