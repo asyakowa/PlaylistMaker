@@ -1,5 +1,4 @@
 package com.example.playlistmaker
-
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,9 +21,6 @@ import retrofit2.Response
 import retrofit2.Retrofit.Builder
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
-
-
-
 class SearchActivity : AppCompatActivity() {
     private val retrofit = Builder()
         .baseUrl("https://itunes.apple.com")
@@ -39,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var placeholderImage: ImageView
     private lateinit var placeholderText: TextView
     private lateinit var updateButton: Button
-     private var historyTracks = ArrayList<Track>()
+    private var historyTracks = ArrayList<Track>()
     private var trackAdapter: TrackAdapter? = null
     private var savedSearchText: String = ""
     private lateinit var searchedHistoryTracks: MaterialTextView
@@ -96,7 +92,15 @@ class SearchActivity : AppCompatActivity() {
             historyTracksClearBtn()
             trackAdapter?.notifyDataSetChanged()
         }
-
+//        inputEditText.setOnFocusChangeListener { _, hasFocus ->
+//            if (hasFocus) {
+//                inputEditText.requestFocus()
+//                inputEditText.post {
+//                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+//                    imm.showSoftInput(inputEditText, InputMethodManager.SHOW_IMPLICIT)
+//                }
+//            }
+//        }
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             focusforBtn(hasFocus)
         }
@@ -113,23 +117,28 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter?.notifyDataSetChanged()
     }
 
+    private fun showHistory() {
+        if (historyTracks.isNotEmpty()) { // Проверка на наличие песен в истории
+            searchedHistoryTracks.visibility = View.VISIBLE
+            searchedHistoryTracksClearBtn.visibility = View.VISIBLE
+        } else {
+            historyTracksClearBtn() // Скрыть кнопки, если истории нет
+        }
 
+        historyTracks = SearchHistory.getHistory()
+        trackAdapter?.tracks = historyTracks
+        trackAdapter?.notifyDataSetChanged()
+    }
 
-private fun showHistory() {
-    searchedHistoryTracks.visibility = View.VISIBLE
-    searchedHistoryTracksClearBtn.visibility = View.VISIBLE
-    historyTracks = SearchHistory.getHistory()
-    trackAdapter?.tracks = historyTracks
-    trackAdapter?.notifyDataSetChanged()
-}
-
-private fun historyTracksClearBtn() {
-    searchedHistoryTracks.visibility = View.GONE
-    searchedHistoryTracksClearBtn.visibility = View.GONE
-}
+    private fun historyTracksClearBtn() {
+        searchedHistoryTracks.visibility = View.GONE
+        searchedHistoryTracksClearBtn.visibility = View.GONE
+    }
     private fun searchedTracksClearButtonVisibility(text: CharSequence?) {
         if (text.isNullOrEmpty()) {
-            searchedHistoryTracksClearBtn.visibility = View.GONE
+//            searchedHistoryTracksClearBtn.visibility = View.VISIBLE
+//            searchedHistoryTracks.visibility = View.VISIBLE
+//            searchedHistoryTracksClearBtn.visibility = View.GONE
             tracks.clear()
             trackAdapter?.notifyDataSetChanged()
             if (historyTracks.isNotEmpty()) {
@@ -139,11 +148,11 @@ private fun historyTracksClearBtn() {
             }
         } else  {
             searchedHistoryTracksClearBtn.visibility = View.VISIBLE
+
             historyTracksClearBtn()
             trackAdapter?.tracks = tracks
         }
     }
-
 
     private fun setupTextWatcher() {
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
@@ -172,8 +181,19 @@ private fun historyTracksClearBtn() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         tracks.clear()
-    }
+        trackAdapter?.notifyDataSetChanged()
 
+
+        if (historyTracks.isNotEmpty()) {
+            showHistory()
+        } else {
+            historyTracksClearBtn()
+        }
+        historyTracks = SearchHistory.getHistory()
+        trackAdapter?.tracks = historyTracks
+        trackAdapter?.notifyDataSetChanged()
+        showHistory()
+    }
 
     private fun search(inputEditText: EditText) {
         trackApiService.search(inputEditText.text.toString())
@@ -249,3 +269,4 @@ private fun historyTracksClearBtn() {
 
 
 }
+ 
