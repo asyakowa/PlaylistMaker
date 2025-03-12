@@ -8,8 +8,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.switchmaterial.SwitchMaterial
 
-class SettingsActivity : Activity() {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -18,7 +20,15 @@ class SettingsActivity : Activity() {
             val intent = Intent(this, MainActivity::class.java)
             finish()
         }
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.theme_switcher)
 
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
+        if ((applicationContext as App).darkTheme) {
+            themeSwitcher.isChecked = true;
+        }
         val shareButton= findViewById<Button>(R.id.share)
 
         val talkToSupport= findViewById<Button>(R.id.talktosupport)
@@ -50,4 +60,6 @@ class SettingsActivity : Activity() {
             startActivity(browserIntent)
         }
     }
+
+
 }
