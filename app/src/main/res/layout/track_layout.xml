@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/size_61dp"
+    android:layout_marginTop="2dp"
 
     android:orientation="horizontal"
     android:id="@+id/viewForTracks">
@@ -19,6 +20,7 @@
         android:layout_width="@dimen/size_0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+
         android:orientation="vertical">
 
         <TextView
@@ -39,6 +41,7 @@
             android:orientation="horizontal">
 
             <TextView
+
                 android:maxLines="1"
                 android:textFontWeight="400"
                 tools:text="NoNo replyNo replplyNoNo replyN replyNo replyNo reply reply"

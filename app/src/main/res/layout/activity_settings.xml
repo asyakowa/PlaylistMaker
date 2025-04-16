@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dpseven"
+        android:layout_height="@dimen/size_56dp"
 
 
 
@@ -50,7 +50,7 @@
             android:layout_height="@dimen/size_61dp"
             android:checked="false"
             android:fontFamily="@font/ys_display_regular"
-            android:textSize="@dimen/sptwo"
+            android:textSize="@dimen/size_16sp"
             android:text="@string/blacktheme"
             android:textAllCaps="false"
             android:gravity="center_vertical"

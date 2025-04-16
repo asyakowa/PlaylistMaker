@@ -3,6 +3,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.content.Intent
+
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -15,12 +17,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit.Builder
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.collections.ArrayList
+
 class SearchActivity : AppCompatActivity() {
     private val retrofit = Builder()
         .baseUrl("https://itunes.apple.com")
@@ -40,6 +44,7 @@ class SearchActivity : AppCompatActivity() {
     private var savedSearchText: String = ""
     private lateinit var searchedHistoryTracks: MaterialTextView
     private lateinit var searchedHistoryTracksClearBtn: Button
+    private var searchResults = ArrayList<Track>()
 
     companion object {
         private const val SEARCH_TEXT_KEY = "search_text"
@@ -64,7 +69,16 @@ class SearchActivity : AppCompatActivity() {
         }
         searchedHistoryTracks = findViewById(R.id.historyView)
         searchedHistoryTracksClearBtn = findViewById(R.id.clearSearchButton)
-        trackAdapter = TrackAdapter()
+        trackAdapter = TrackAdapter(this) { trackJson ->
+
+            val intent = Intent(this, AudiopleerActivity::class.java)
+            intent.putExtra(KEY_CHOSEN_TRACK, trackJson)
+            startActivity(intent)
+
+        }
+
+
+
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = trackAdapter
         trackAdapter!!.tracks = tracks
@@ -116,13 +130,47 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter?.tracks = historyTracks
         trackAdapter?.notifyDataSetChanged()
     }
+    override fun onResume() {
+        super.onResume()
+
+
+        updateHistoryTracks()
+
+
+        if (searchResults.isNotEmpty()) {
+
+            trackAdapter?.tracks = searchResults
+            trackAdapter?.notifyDataSetChanged()
+            showResults()
+        } else {
+
+            if (inputEditText.text.isEmpty()) {
+                showHistory()
+            }
+        }
+    }
+    private fun showResults() {
+//        searchedHistoryTracks.visibility = View.VISIBLE //
+        searchedHistoryTracksClearBtn.visibility = View.GONE
+        searchedHistoryTracks.visibility = View.GONE
+    }
+    private fun updateHistoryTracks() {
+        historyTracks = SearchHistory.getHistory()
+        if (historyTracks.isNotEmpty()) {
+            trackAdapter?.tracks = historyTracks
+            trackAdapter?.notifyDataSetChanged()
+            showHistory()
+        } else {
+            historyTracksClearBtn()
+        }
+    }
 
     private fun showHistory() {
-        if (historyTracks.isNotEmpty()) { // Проверка на наличие песен в истории
+        if (historyTracks.isNotEmpty()) {
             searchedHistoryTracks.visibility = View.VISIBLE
             searchedHistoryTracksClearBtn.visibility = View.VISIBLE
         } else {
-            historyTracksClearBtn() // Скрыть кнопки, если истории нет
+            historyTracksClearBtn()
         }
 
         historyTracks = SearchHistory.getHistory()
@@ -180,7 +228,7 @@ class SearchActivity : AppCompatActivity() {
         clearIcon.visibility = View.GONE
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
-        tracks.clear()
+        searchResults.clear()
         trackAdapter?.notifyDataSetChanged()
 
 
@@ -209,6 +257,8 @@ class SearchActivity : AppCompatActivity() {
                         tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
+                            searchResults.clear()
+                            searchResults.addAll(tracks)
                             trackAdapter?.notifyDataSetChanged()
                             showMessage("")
                         } else {
@@ -227,6 +277,7 @@ class SearchActivity : AppCompatActivity() {
                     Log.e("API Failure", "Error: ${t.message}")
                 }
             })
+
     }
     fun showMessage(message: String) {
         if (message.isNotEmpty()) {
@@ -269,4 +320,4 @@ class SearchActivity : AppCompatActivity() {
 
 
 }
- 
+

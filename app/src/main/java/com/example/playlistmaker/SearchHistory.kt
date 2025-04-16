@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
 object  SearchHistory {
     private const val HISTORY_KEY = "search_history"
     private const val MAX_HISTORY_SIZE = 10
@@ -32,13 +31,13 @@ object  SearchHistory {
         if (historyList.contains(track)) {
             historyList.remove(track)
         }
-
-    fun setHistory(history: List<Track>) {
-        val json = gson.toJson(history)
-        sharedPreferences.edit()
-            .putString(HISTORY_KEY, json)
-            .apply()
-    }
+//
+//        fun setHistory(history: List<Track>) {
+//            val json = gson.toJson(history)
+//            sharedPreferences.edit()
+//                .putString(HISTORY_KEY, json)
+//                .apply()
+//        }
         if (historyList.size >= MAX_HISTORY_SIZE) {
             historyList.removeAt(historyList.size - 1)
         }
@@ -57,6 +56,4 @@ object  SearchHistory {
             .apply()
     }
 }
-
-
 

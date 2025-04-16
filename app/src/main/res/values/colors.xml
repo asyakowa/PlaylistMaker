@@ -24,4 +24,13 @@
     <color name="clearHistoryBtnText">#FFFFFF</color>
     <color name="clearHistoryBtnBckdTint">#1A1B22</color>
     <color name="searchHistory">#1A1B22</color>
+    <color name="songNameAudioplayer">#1A1B22</color>
+    <color name="artistNameAudioplayer">#1A1B22</color>
+    <color name="mainInfoTrackAudioplayer">#AEAFB4</color>
+    <color name="mainInfoValueTrackAudioplayer">#1A1B22</color>
+    <color name="colorForCurrentSongTime">#1A1B22</color>
+    <color name="colorBackgroundActivityAudioplayer">#FFFFFF</color>
+    <color name="colorThemeForButtons">#FFFFFF</color>
+    <color name="colorThemeForButtons2">#1A1B22</color>
+
 </resources>
