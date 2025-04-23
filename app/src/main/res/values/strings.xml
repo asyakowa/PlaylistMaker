@@ -18,6 +18,12 @@
     <string name="refresh">Обновить</string>
     <string name="clear_history">Очистить историю</string>
     <string name="search_history">Вы искали</string>
+    <string name="duration">Длительность</string>
+    <string name="albumofsong">Альбом</string>
+    <string name="yearofsong">Год</string>
+    <string name="genreofsong">Жанр</string>
+    <string name="countryofsong">Страна</string>
+    <string name="durationtest">0:30</string>
 
 
 </resources>
