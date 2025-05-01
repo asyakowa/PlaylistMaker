@@ -122,7 +122,9 @@ class AudiopleerActivity : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             play.setImageResource(R.drawable.playtrack)
+            handler.removeCallbacks(runnable)
             playerState = STATE_PREPARED
+            currentSongTime?.text = getString(R.string.oo_time)
         }
     }
 
