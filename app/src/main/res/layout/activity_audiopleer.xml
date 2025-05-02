@@ -161,7 +161,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/durationSongValue"
         app:layout_constraintHorizontal_bias="1"
-        android:maxLength="48"
+        android:maxLength="47"
         />
 
     <TextView
