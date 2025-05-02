@@ -24,6 +24,7 @@
     <string name="genreofsong">Жанр</string>
     <string name="countryofsong">Страна</string>
     <string name="durationtest">0:30</string>
+    <string name="oo_time">0:00</string>
 
 
 </resources>

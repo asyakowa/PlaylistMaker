@@ -32,4 +32,6 @@
     <color name="colorBackgroundActivityAudioplayer">#1A1B22</color>
     <color name="colorThemeForButtons">#1A1B22</color>
     <color name="colorThemeForButtons2">#FFFFFF</color>
+    <color name="colorThemeForButtons3">#FFFFFF</color>
+    <color name="colorProgressBar">#3772E7</color>
 </resources>

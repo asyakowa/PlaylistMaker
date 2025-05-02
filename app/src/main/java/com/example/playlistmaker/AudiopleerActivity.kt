@@ -1,6 +1,11 @@
 package com.example.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +18,26 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 const val KEY_CHOSEN_TRACK = "chosen_track"
 class AudiopleerActivity : AppCompatActivity() {
+      lateinit var url: String
 
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+    }
+    private lateinit var handler: Handler
+    private lateinit var runnable: Runnable
+    private var playerState = STATE_DEFAULT
+    private var currentSongTime: TextView? = null
+    private lateinit var play: ImageButton
+    private var mediaPlayer = MediaPlayer()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audiopleer)
-
+        handler = Handler(Looper.getMainLooper())
+        play = findViewById(R.id.playSongBtn)
+        currentSongTime= findViewById(R.id.currentSongTime)
         val backButton = findViewById<Toolbar>(R.id.toolbar)
         backButton.setOnClickListener {
             finish()
@@ -27,6 +47,7 @@ class AudiopleerActivity : AppCompatActivity() {
         if (trackJson != null) {
             val track = Gson().fromJson(trackJson, Track::class.java)
 //        val track = Gson().fromJson(trackJson, Track::class.java)
+             url = track.previewUrl
             val songName = findViewById<TextView>(R.id.songName)
             songName.text = track.trackName
             val singerName = findViewById<TextView>(R.id.artistName)
@@ -63,4 +84,78 @@ class AudiopleerActivity : AppCompatActivity() {
 
                 .into(imageOfAlbum)
         }
-    } }
+        preparePlayer()
+
+        play.setOnClickListener {
+            playbackControl()
+        }
+    }
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+//        play.setImageResource(R.drawable.playtrack)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopUpdatingCurrentTime()
+        mediaPlayer.release()
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    private fun preparePlayer() {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            play.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            play.setImageResource(R.drawable.playtrack)
+            handler.removeCallbacks(runnable)
+            playerState = STATE_PREPARED
+            currentSongTime?.text = getString(R.string.oo_time)
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        play.setImageResource(R.drawable.pausetrack)
+        playerState = STATE_PLAYING
+        startUpdatingCurrentTime()
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        play.setImageResource(R.drawable.playtrack)
+        playerState = STATE_PAUSED
+        startUpdatingCurrentTime()
+    }
+    private fun startUpdatingCurrentTime() {
+        runnable = object : Runnable {
+            override fun run() {
+                if (mediaPlayer.isPlaying) {
+                    val currentPosition = mediaPlayer.currentPosition / 1000 // Получаем текущее время в секундах
+                    currentSongTime?.text = String.format("%02d:%02d", currentPosition / 60, currentPosition % 60) // Форматируем время
+                    handler.postDelayed(this, 1000) // Обновляем каждую секунду
+                }
+            }
+        }
+        handler.post(runnable)
+    }
+
+    private fun stopUpdatingCurrentTime() {
+        handler.removeCallbacks(runnable)
+    }
+    }
+
