@@ -152,7 +152,7 @@
         android:text="@string/albumofsong"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/durationSong"
-        />
+          />
 
     <TextView
         android:id="@+id/nameAlbumValue"

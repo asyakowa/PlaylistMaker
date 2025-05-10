@@ -1,10 +1,9 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,10 +12,13 @@ import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
-const val KEY_CHOSEN_TRACK = "chosen_track"
+
+ const val KEY_CHOSEN_TRACK = "chosen_track"
 class AudiopleerActivity : AppCompatActivity() {
       lateinit var url: String
 
@@ -46,7 +48,6 @@ class AudiopleerActivity : AppCompatActivity() {
         val trackJson = intent.getStringExtra(KEY_CHOSEN_TRACK)
         if (trackJson != null) {
             val track = Gson().fromJson(trackJson, Track::class.java)
-//        val track = Gson().fromJson(trackJson, Track::class.java)
              url = track.previewUrl
             val songName = findViewById<TextView>(R.id.songName)
             songName.text = track.trackName
@@ -93,7 +94,6 @@ class AudiopleerActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         pausePlayer()
-//        play.setImageResource(R.drawable.playtrack)
     }
 
     override fun onDestroy() {
@@ -114,6 +114,7 @@ class AudiopleerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
+        currentSongTime?.text = getString(R.string.oo_time)
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
@@ -129,9 +130,11 @@ class AudiopleerActivity : AppCompatActivity() {
     }
 
     private fun startPlayer() {
+
         mediaPlayer.start()
         play.setImageResource(R.drawable.pausetrack)
         playerState = STATE_PLAYING
+
         startUpdatingCurrentTime()
     }
 
