@@ -1,17 +1,19 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
-
-
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
+import com.example.playlistmaker.Creator
+import com.example.playlistmaker.domain.api.SettingsInteractor
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var settingsInteractor: SettingsInteractor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -20,15 +22,34 @@ class SettingsActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             finish()
         }
+
+//        val themeSwitcher = findViewById<SwitchMaterial>(R.id.theme_switcher)
+//
+//
+//        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+//            (applicationContext as App).switchTheme(checked)
+//        }
+//        if ((applicationContext as App).darkTheme) {
+//            themeSwitcher.isChecked = true;
+//        }
+
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.theme_switcher)
 
 
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             (applicationContext as App).switchTheme(checked)
         }
-        if ((applicationContext as App).darkTheme) {
-            themeSwitcher.isChecked = true;
-        }
+        settingsInteractor = Creator.provideSettingsInteractor(this)
+
+        settingsInteractor.isDarkThemeEnabled(
+            object : SettingsInteractor.DarkThemeConsumer {
+                override fun consume(darkTheme : Boolean) {
+                    themeSwitcher.isChecked = darkTheme
+                }
+            }
+        )
+
+
         val shareButton= findViewById<Button>(R.id.share)
 
         val talkToSupport= findViewById<Button>(R.id.talktosupport)
