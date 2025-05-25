@@ -29,6 +29,7 @@
 
         <TextView
             android:text="@string/app_settings"
+            android:id="@+id/toolbar"
 
 
             android:fontFamily="@font/ys_display_medium"
@@ -45,7 +46,7 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
 
-            android:id="@+id/theme_switcher"
+            android:id="@+id/themeswitcher"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_61dp"
             android:checked="false"

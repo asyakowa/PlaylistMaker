@@ -1,10 +1,15 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.main.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.media.MediaActivity
 import com.example.playlistmaker.R
+import com.example.playlistmaker.search.ui.SearchActivity
+//import com.example.playlistmaker.search.ui.SearchActivity
+import com.example.playlistmaker.settings.ui.SettingsActivity
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         // 3 кнопка
         val settingsButton = findViewById<Button>(R.id.settings)
         settingsButton.setOnClickListener {
-
-
             val displayIntent = Intent(this,  SettingsActivity ::class.java)
             startActivity(displayIntent)
         }
