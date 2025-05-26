@@ -18,9 +18,9 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Creator.initApplication(this)
+        Creator.init(getSharedPreferences("SEARCH_HISTORY", MODE_PRIVATE))
         sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         darkTheme = sharedPrefs.getBoolean(EDIT_TEXT_KEY, false)
-        switchTheme(darkTheme)
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {

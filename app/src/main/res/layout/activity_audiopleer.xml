@@ -223,15 +223,6 @@
         app:layout_constraintTop_toBottomOf="@id/songGenreValue"
         app:layout_constraintHorizontal_bias="1"
         />
-        <ProgressBar
-            android:id="@+id/progresssbar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="300dp"
 
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

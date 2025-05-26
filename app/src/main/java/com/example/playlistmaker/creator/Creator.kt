@@ -26,12 +26,18 @@ import com.example.playlistmaker.sharing.domain.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.SharingRepository
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 import com.example.playlistmaker.sharing.domain.impl.SharingInteractorImpl
-import com.example.playlistmaker.sharing.domain.impl.SharingRepositoryImpl
+import com.example.playlistmaker.sharing.data.impl.SharingRepositoryImpl
 import com.example.playlistmakersearch.domain.api.TracksInteractor
-
+import com.google.gson.Gson
 
 
 object Creator {
+
+    private val gson = Gson()
+    private lateinit var sharedPrefs: SharedPreferences
+    fun init(sharedPreferences: SharedPreferences) {
+        sharedPrefs = sharedPreferences
+    }
 
      lateinit var application: Application
     fun initApplication(application: Application){
@@ -50,13 +56,20 @@ object Creator {
     fun provideTracksInteractor(): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository() )
     }
+//    private val historyRepository: SearchHistoryRepository by lazy {
+//        SearchHistoryRepositoryImpl(sharedPrefs, gson)
+//    }
     private fun getSearchHistoryRepository(context: Context): SearchHistoryRepository {
-        return SearchHistoryRepositoryImpl(context)
+        return SearchHistoryRepositoryImpl(sharedPrefs, gson)
     }
+
+//    val historyInteractor: SearchHistoryInteractor by lazy {
+//        SearchHistoryInteractorImpl(historyRepository)
+//    }
+
     fun provideSearchHistoryInteractor(context: Context): SearchHistoryInteractor {
         return SearchHistoryInteractorImpl(getSearchHistoryRepository(context))
     }
-
 
     private fun getSettingsRepository(context: Context) : SettingsRepository {
         return SettingsRepositoryImpl(context)
@@ -75,7 +88,8 @@ object Creator {
         return SettingsInteractorImpl(getSettingsRepository((context)))
     }
     private fun getSharingRepository() : SharingRepository {
-        return SharingRepositoryImpl(application)}
+        return SharingRepositoryImpl(application)
+    }
 
         private fun getExternalNavigator() : ExternalNavigator {
             return ExternalNavigatorImpl()

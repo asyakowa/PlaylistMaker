@@ -21,6 +21,8 @@ lifecycleViewmodelKtx = "2.9.0"
 materialVersion = "1.6.1"
 browser = "1.8.0"
 navigationeventAndroid = "1.0.0-alpha01"
+recyclerview = "1.4.0"
+googleMaterial = "1.12.0"
 
 
 [libraries]
@@ -46,6 +48,8 @@ androidx-media3-extractor = { group = "androidx.media3", name = "media3-extracto
 core = { group = "com.google.ar", name = "core", version.ref = "core" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 androidx-navigationevent-android = { group = "androidx.navigationevent", name = "navigationevent-android", version.ref = "navigationeventAndroid" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "googleMaterial" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
