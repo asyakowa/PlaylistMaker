@@ -6,18 +6,27 @@
     <string name="blacktheme">Темная тема</string>
     <string name="share">Поделиться приложением</string>
     <string name="texttosupport">Написать в поддержку</string>
+
     <string name="bckbt">Кнопка Назад</string>
+
     <string name="useragreement">Пользовательское соглашение</string>
     <string name="linkforad">https://practicum.yandex.ru/android-developer/</string>
     <string name="linkfoua">https://yandex.ru/legal/practicum_offer/</string>
     <string name="messagefoad">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="thanksforad">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="email">muriona@yandex.ru</string>
+
+    <string name="toast_share">На устройстве нет приложения, через которое можно поделиться приложением</string>
+    <string name="toast_ua">На устройстве нет приложения, через которое можно открыть ссылку на пользовательское соглашение</string>
+    <string name="toast_mestosupport">На устройстве нет приложения, через которое можно написать в поддержку </string>
+
+
     <string name="err_srch">Ничего не нашлось</string>
     <string name="error_cnn">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
     <string name="clear_history">Очистить историю</string>
     <string name="search_history">Вы искали</string>
+
     <string name="duration">Длительность</string>
     <string name="albumofsong">Альбом</string>
     <string name="yearofsong">Год</string>

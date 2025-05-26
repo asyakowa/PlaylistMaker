@@ -50,6 +50,8 @@ dependencies {
     implementation(libs.androidx.media3.extractor)
     implementation(libs.core)
     implementation(libs.androidx.browser)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.google.material)
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
