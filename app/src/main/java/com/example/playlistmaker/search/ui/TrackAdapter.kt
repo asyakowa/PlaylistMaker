@@ -9,9 +9,9 @@ import com.example.playlistmaker.search.domain.SearchHistoryRepository
 import com.example.playlistmaker.search.domain.models.Track
 
 class TrackAdapter(
-    private val context: Context,
-    private val searchHistoryRepository: SearchHistoryRepository,
-    private val onTrackClick: (String) -> Unit
+//    private val context: Context,
+//    private val searchHistoryRepository: SearchHistoryRepository,
+//    private val onTrackClick: (String) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>(), ItemClickListener {
 
     var tracks: MutableList<Track> = mutableListOf()

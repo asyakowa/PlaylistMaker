@@ -12,6 +12,9 @@ import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.ui.model.PlayStatus
 import com.example.playlistmaker.player.ui.model.TrackScreenState
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AudioPlayerViewModel (
     private val audioplayer: Audioplayer
@@ -45,7 +48,7 @@ private var loadingLiveData = MutableLiveData(true)
 
                     playStatusLiveData.value =
                         getCurrentPlayStatus().
-                        copy(progress = formatTime(progress))
+                        copy(progress = formatTime(progress.toLong()))
                 }
 
                 override fun onPause() {
@@ -73,11 +76,18 @@ private var loadingLiveData = MutableLiveData(true)
             },
         )
     }
-
+    fun formatDuration(durationMillis: Long): String {
+        val formatter = SimpleDateFormat("mm:ss", Locale.getDefault())
+        return formatter.format(Date(durationMillis))
+    }
+    fun formatYear(yearMillis: Long): String {
+        val formatter = SimpleDateFormat("yyyy", Locale.getDefault())
+        return formatter.format(Date(yearMillis))
+    }
     fun pause() {
         audioplayer.pause()
     }
-    private fun formatTime(progress: Float): String {
+     fun formatTime(progress: Long): String {
         val seconds = progress.toInt()
         val minutes = seconds / 60
         return String.format("%02d:%02d", minutes, seconds)

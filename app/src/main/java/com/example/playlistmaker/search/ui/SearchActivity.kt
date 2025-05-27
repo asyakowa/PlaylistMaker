@@ -4,31 +4,23 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.data.SearchHistoryRepositoryImpl
-import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmakersearch.domain.api.TracksInteractor
-import com.google.android.material.textview.MaterialTextView
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.content.Intent
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import kotlin.collections.ArrayList
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.AudiopleerActivity
-import com.example.playlistmaker.player.ui.KEY_CHOSEN_TRACK
 import com.example.playlistmaker.search.domain.models.TrackState
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
+
 class SearchActivity :
     AppCompatActivity() {
     companion object {
@@ -36,50 +28,19 @@ class SearchActivity :
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
     private var searchString: String = ""
-
     private val viewModel by viewModels<SearchViewModel>()
     { SearchViewModel.getViewModelFactory() }
-
-
     private lateinit var binding: ActivitySearchBinding
     private lateinit var simpleTextWatcher: TextWatcher
     private val searchHistoryAdapter = SearchHistoryAdapter()
     private lateinit var trackAdapter: TrackAdapter
     private var isClickAllowed = true
-    private lateinit var progressBar: ProgressBar
     private val handler = Handler(Looper.getMainLooper())
-
-
-    private lateinit var searchedHistoryTracks: MaterialTextView
-    private lateinit var searchedHistoryTracksClearBtn: Button
-    private var searchResults = ArrayList<Track>()
-    private lateinit var tracksInteractor: TracksInteractor
-
-    private lateinit var searchHistoryInteractor: SearchHistoryInteractor
-
-    private val tracks = mutableListOf<Track>()
-    private var historyTracks = mutableListOf<Track>()
-
-    private lateinit var searchHistoryRepository: SearchHistoryRepositoryImpl
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//            setContentView(R.layout.activity_search)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val gson = Gson()
-        val sharedPreferences = getSharedPreferences("HISTORY_KEY", MODE_PRIVATE)
-        searchHistoryRepository = SearchHistoryRepositoryImpl(sharedPreferences, gson)
-
-
-        trackAdapter = TrackAdapter(this, searchHistoryRepository) { trackJson ->
-            if (clickDebounce()) {
-                val intent = Intent(this, AudiopleerActivity::class.java)
-                intent.putExtra(KEY_CHOSEN_TRACK, trackJson)
-                Log.d("Тег", "Записываем в историю1")
-                startActivity(intent)
-            } }
-
+        trackAdapter = TrackAdapter()
 
         binding.recyclerView.adapter = trackAdapter
         binding.recyclerVieww.adapter = searchHistoryAdapter
@@ -153,7 +114,6 @@ class SearchActivity :
                 searchHistoryAdapter.searchHistoryTrackList.isNotEmpty()
        }
 
-
         binding.backbutton.setOnClickListener {
             finish()
         }
@@ -178,26 +138,18 @@ class SearchActivity :
             binding.inputEditText.setText("")
             clearSearchList()
             closeErrorMessage()
-//            updateHistoryUi(tracks)
             hideKeyboard()
         }
     }
     private fun clearSearchList() {
         trackAdapter.removeItems()
         trackAdapter.notifyDataSetChanged()
-//
-
     }
 
     fun setupContent() {
         lifecycleScope.launch {
             viewModel.getHistoryList()
             binding.inputEditText.setText(viewModel.getSearchTextLiveData().value)
-//            binding.historyView.visibility=View.VISIBLE
-//            binding.historyView2.visibility=View.VISIBLE
-//            binding.recyclerView.visibility=View.VISIBLE
-//            binding.clearSearchButton.visibility=View.VISIBLE
-
 
         }
     }
@@ -230,7 +182,6 @@ class SearchActivity :
         binding.recyclerView.visibility=View.GONE
         binding.historyView.visibility=View.GONE
         binding.updateButton.visibility=View.VISIBLE
-//        binding.ErrorSearch.visibility=View.VISIBLE
         view.isVisible = true
 
         hideKeyboard()
@@ -278,5 +229,3 @@ class SearchActivity :
         super.onDestroy()
         simpleTextWatcher.let { binding.inputEditText.removeTextChangedListener(it) }
     } }
-
-

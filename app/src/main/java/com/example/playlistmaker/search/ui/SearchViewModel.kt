@@ -1,7 +1,5 @@
 package com.example.playlistmaker.search.ui
 
-
-
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -13,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmakersearch.domain.api.TracksInteractor
-
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -42,12 +39,7 @@ class SearchViewModel(private val searchHistoryInteractor: SearchHistoryInteract
         }
     }
 
-
-
-
     private val handler = Handler(Looper.getMainLooper())
-    private val stateLiveData = MutableLiveData<TrackState>()
-
     private val searchLiveData = MutableLiveData<TrackState>()
     fun getSearchLiveData(): LiveData<TrackState> = mediatorStateLiveData
 
