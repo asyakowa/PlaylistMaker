@@ -21,16 +21,14 @@ import java.util.Locale
 
 const val KEY_CHOSEN_TRACK = "chosen_track"
 class AudiopleerActivity : AppCompatActivity() {
-      lateinit var url: String
+
     private val viewModel by viewModels<AudioPlayerViewModel>
     {AudioPlayerViewModel.getViewModelFactory() }
     private lateinit var binding:  ActivityAudiopleerBinding
     private var isPlaying = false
     private lateinit var playIcon : Drawable
     private lateinit var pauseIcon : Drawable
-    private var playerState = PlayerState.DEFAULT
-private lateinit var mediaPlayer: MediaPlayer
-private companion object {
+ private companion object {
     const val INTENT_TRACK_KEY = "track_to_player"
     const val ERROR_TRACK_ID = -1
 }
@@ -63,7 +61,7 @@ private companion object {
 
              }}
 
-fun updatePlayButton(status: Boolean) {
+    private fun updatePlayButton(status: Boolean) {
     if(status) {
         binding.playSongBtn.setImageDrawable(pauseIcon)
     } else {
@@ -71,15 +69,14 @@ fun updatePlayButton(status: Boolean) {
     }
     isPlaying = status
 }
-             fun changeContentVisibility(loading: Boolean) {
-//
+    private fun changeContentVisibility(loading: Boolean) {
                  binding.albumImage.visibility=View.VISIBLE
 
                  binding.artistName.visibility=View.VISIBLE
                  binding.songName.visibility=View.VISIBLE
 
              }
-             fun updateUI(track: Track) {
+    private fun updateUI(track: Track) {
                  changeContentVisibility(loading = false)
                  Glide.with(this).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                      .placeholder(R.drawable.placeholder)
@@ -90,9 +87,11 @@ fun updatePlayButton(status: Boolean) {
                      .into(binding.albumImage)
                  binding.songName.text = track.trackName
                  binding.artistName.text = track.artistName
-                 binding.durationSongValue.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+                 val duration=viewModel.formatDuration(track.trackTimeMillis)
+                 binding.durationSongValue.text =duration
                  binding.nameAlbumValue.text = track.collectionName
-                 binding.songYearValue.text = SimpleDateFormat("yyyy", Locale.getDefault()).format(track.trackTimeMillis.toLong())
+                  val year=viewModel.formatYear(track.trackTimeMillis)
+                 binding.songYearValue.text =year
                  binding.songGenreValue.text = track.primaryGenreName
                  binding.songCountryValue.text = track.country
 
