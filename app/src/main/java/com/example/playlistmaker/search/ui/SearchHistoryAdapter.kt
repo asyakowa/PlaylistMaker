@@ -9,7 +9,7 @@ import com.example.playlistmaker.search.domain.models.Track
 
 class SearchHistoryAdapter : RecyclerView.Adapter<TrackViewHolder> (), ItemClickListener {
 
-    var searchHistoryTrackList = listOf<Track>()
+    var searchHistoryTrackList: MutableList<Track> = mutableListOf()
     override var onItemClick: ((Track) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
