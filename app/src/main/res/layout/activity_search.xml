@@ -7,7 +7,7 @@
     android:background="@color/searchBack"
     android:orientation="vertical"
 
-     >
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_56dp"
@@ -35,7 +35,7 @@
         android:layout_marginEnd="@dimen/size_16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       >
+        >
         <com.google.android.material.textfield.TextInputEditText
             android:imeOptions="actionDone"
             android:singleLine="true"
@@ -69,19 +69,20 @@
 
     </FrameLayout>
 
+
     <LinearLayout
 
-        android:id="@+id/placeholderMessage"
+        android:id="@+id/ErrorSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="102dp"
         android:orientation="vertical"
         android:visibility="gone">
-
         <ImageView
-            android:id="@+id/placeholderImage"
+            android:id="@+id/ErrorSearchImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/err_srch"
             android:layout_gravity="center_horizontal" />
 
         <TextView
@@ -93,13 +94,50 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/size_16dp"
             android:letterSpacing="0"
-            android:id="@+id/placeholderText"
+            android:id="@+id/ErrorSearchText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
+            android:text="@string/err_srch"
 
 
-             />
+            />
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+
+        android:id="@+id/ErrorSearch2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="102dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/ErrorSearchImage2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/err_cnct"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+
+            style="@style/placeholderText"
+            android:textFontWeight="400"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="@dimen/size_24dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:letterSpacing="0"
+            android:id="@+id/ErrorSearchText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/error_cnn"
+            />
         <Button
             style="@style/updateButton"
             android:id="@+id/updateButton"
@@ -118,56 +156,56 @@
             app:cornerRadius="54dp"
             android:visibility="gone"/>
 
-</LinearLayout>
 
-    <LinearLayout
+    </LinearLayout>
+
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical">
+    <ProgressBar android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_marginTop="150dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/colorProgressBar"
+        android:visibility="gone"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/historyView2"
+    android:orientation="vertical">
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_marginHorizontal="@dimen/size_24dp"
+        android:textFontWeight="500"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/search_history"
+        android:letterSpacing="0"
+        android:id="@+id/historyView"
+        android:lineHeight="@dimen/size_0dp"
+        android:visibility="gone"
+        style="@style/searchHistory"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/recyclerVieww"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:layout_marginStart="@dimen/dpfour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginEnd="@dimen/size_10dp"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:orientation="vertical">
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_marginHorizontal="@dimen/size_24dp"
-                android:textFontWeight="500"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:layout_marginTop="@dimen/size_16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/search_history"
-                android:letterSpacing="0"
-                android:id="@+id/historyView"
-                android:lineHeight="@dimen/size_0dp"
-                style="@style/searchHistory" />
-
-
-        </LinearLayout>
-        <ProgressBar android:id="@+id/progressBar"
-            android:layout_width="44dp"
-            android:layout_marginTop="150dp"
-            android:layout_height="44dp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/colorProgressBar"
-            android:visibility="gone"/>
-        <androidx.recyclerview.widget.RecyclerView
-
-            android:id="@+id/recyclerView"
-            android:layout_marginTop="@dimen/size_16dp"
-            android:layout_marginStart="@dimen/dpfour"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/size_10dp"
-
-            android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/track_layout"/>
-
+        android:layout_weight="1"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/track_layout"/>
     <com.google.android.material.button.MaterialButton
         style="@style/clearHistoryBtn"
 
@@ -182,5 +220,22 @@
         android:layout_gravity="center_horizontal"
 
         android:text="@string/clear_history" />
+
 </LinearLayout>
+
+<androidx.recyclerview.widget.RecyclerView
+
+    android:id="@+id/recyclerView"
+    android:layout_marginTop="@dimen/size_16dp"
+    android:layout_marginStart="@dimen/dpfour"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/size_10dp"
+
+    android:layout_weight="1"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    tools:listitem="@layout/track_layout"/>
+
+
 </LinearLayout>
+    </LinearLayout>
