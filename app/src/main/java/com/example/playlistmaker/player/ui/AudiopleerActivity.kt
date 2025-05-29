@@ -1,7 +1,6 @@
 package com.example.playlistmaker.player.ui
 
 import android.graphics.drawable.Drawable
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -15,13 +14,10 @@ import com.example.playlistmaker.databinding.ActivityAudiopleerBinding
 import com.example.playlistmaker.player.ui.model.TrackScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
 const val KEY_CHOSEN_TRACK = "chosen_track"
 class AudiopleerActivity : AppCompatActivity() {
-
     private val viewModel by viewModels<AudioPlayerViewModel>
     {AudioPlayerViewModel.getViewModelFactory() }
     private lateinit var binding:  ActivityAudiopleerBinding
@@ -71,7 +67,6 @@ class AudiopleerActivity : AppCompatActivity() {
 }
     private fun changeContentVisibility(loading: Boolean) {
                  binding.albumImage.visibility=View.VISIBLE
-
                  binding.artistName.visibility=View.VISIBLE
                  binding.songName.visibility=View.VISIBLE
 

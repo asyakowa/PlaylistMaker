@@ -1,17 +1,16 @@
 package com.example.playlistmaker.search.ui
-import android.content.Context
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.TrackLayoutBinding
 import com.example.playlistmaker.search.domain.ItemClickListener
-import com.example.playlistmaker.search.domain.SearchHistoryRepository
 import com.example.playlistmaker.search.domain.models.Track
 
 class TrackAdapter(
 //    private val context: Context,
-//    private val searchHistoryRepository: SearchHistoryRepository,
-//    private val onTrackClick: (String) -> Unit
+////    private val searchHistoryRepository: SearchHistoryRepository,
+//    private val onTrackClick: (Track) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>(), ItemClickListener {
 
     var tracks: MutableList<Track> = mutableListOf()

@@ -4,7 +4,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -20,68 +19,44 @@ import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.models.TrackState
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val searchHistoryInteractor: SearchHistoryInteractor,
-                      private var tracksInteractor: TracksInteractor,
-                      private var playerInteractor: AudioplayerInteractor,
+
+class SearchViewModel(
+    private val searchHistoryInteractor: SearchHistoryInteractor,
+    private val tracksInteractor: TracksInteractor,
+    private val playerInteractor: AudioplayerInteractor
 ) : ViewModel() {
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                 val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(application)
-
-                 var playerInteractor = Creator.provideAudioplayerInteractor()
-
-                 val tracksInteractor  = Creator.provideTracksInteractor()
+                val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(application)
+                val playerInteractor = Creator.provideAudioplayerInteractor()
+                val tracksInteractor = Creator.provideTracksInteractor()
                 SearchViewModel(searchHistoryInteractor, tracksInteractor, playerInteractor)
             }
         }
     }
 
     private val handler = Handler(Looper.getMainLooper())
-    private val searchLiveData = MutableLiveData<TrackState>()
-    fun getSearchLiveData(): LiveData<TrackState> = mediatorStateLiveData
 
-    private val historyLiveData = MutableLiveData<MutableList<Track>>()
-    fun getHistoryLiveData(): LiveData<MutableList<Track>> = historyLiveData
-
-    private val searchTextLiveData = MutableLiveData<String>("")
-    fun getSearchTextLiveData(): LiveData<String> = searchTextLiveData
+    private val _uiState = MutableLiveData(TrackState())
+    val uiState: LiveData<TrackState> = _uiState
 
     private var lastSearchedRequest: String? = null
-
-    override fun  onCleared() {
-        super.onCleared()
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-
-    }
-    suspend fun getHistoryList() {
+    fun onSearchTextChanged(newText: String) {
+        _uiState.value = _uiState.value?.copy(searchText = newText)
         viewModelScope.launch {
-            val history = searchHistoryInteractor.getHistoryList()
-            historyLiveData.postValue(history.toMutableList())
-
-
-
-                 fun consume(history: List<Track>) {
-                    historyLiveData.postValue(history.toMutableList())
-                }
-            }
-
-    }
-    suspend fun addTrackInHistory(track: Track) {
-        viewModelScope.launch {
-            searchHistoryInteractor.addTrackInHistory(track)
-            playerInteractor.setCurrentTrack(track)
-            getHistoryList()
+            searchRequest(newText)
         }
     }
-    fun searchDebounce(changedText: String) {
-        if (lastSearchedRequest == changedText && getSearchLiveData().value
-            != TrackState.Error) return
 
-        this.lastSearchedRequest = changedText
-        searchTextLiveData.postValue(changedText)
+    fun searchDebounce(changedText: String) {
+        if (lastSearchedRequest == changedText && _uiState.value?.isError != true) return
+
+        lastSearchedRequest = changedText
+        _uiState.value = _uiState.value?.copy(searchText = changedText)
 
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         val searchRunnable = Runnable {
@@ -91,73 +66,70 @@ class SearchViewModel(private val searchHistoryInteractor: SearchHistoryInteract
         }
 
         val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
+        handler.postAtTime(searchRunnable, SEARCH_REQUEST_TOKEN, postTime)
     }
-
-    private suspend fun searchRequest(newSearchText: String) {
+    fun search(newSearchText: String) {
+        viewModelScope.launch {
+            searchRequest(newSearchText)
+        }
+    }
+     suspend fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
-            renderState(TrackState.Loading)
+            _uiState.postValue(_uiState.value?.copy(
+                isLoading = true,
+                isError = false,
+                isEmpty = false
+            ))
 
-            tracksInteractor.searchTracks(newSearchText, object :
-                TracksInteractor.TracksConsumer {
+            tracksInteractor.searchTracks(newSearchText, object : TracksInteractor.TracksConsumer {
                 override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-//                    handler.post {
-                    val tracks = mutableListOf<Track>()
-                    if (foundTracks != null) {
-                        tracks.addAll(foundTracks)
-                    }
+                    val tracks = foundTracks.orEmpty()
 
-                    when {
-                        errorMessage != null -> {
-                            renderState(
-                                TrackState.Error
-
-                            )
-                        }
-
-                        tracks.isEmpty() -> {
-                            renderState(
-                                TrackState.Empty
-                            )
-
-                        }
-
-                        else -> {
-                            renderState(
-                                TrackState.Content(
-                                    tracks
-                                )
-                            )
-                        }
-                    }
-
-//                    }
+                    _uiState.postValue(_uiState.value?.copy(
+                        isLoading = false,
+                        isError = errorMessage != null,
+                        isEmpty = errorMessage == null && tracks.isEmpty(),
+                        searchResults = tracks
+                    ))
                 }
             })
+        } else {
+
+            _uiState.postValue(_uiState.value?.copy(
+                searchResults = emptyList(),
+                isEmpty = false,
+                isError = false,
+                isLoading = false
+            ))
         }
     }
 
-    private fun renderState(state: TrackState) {
-        searchLiveData.postValue(state)
+    fun getHistoryList() {
+        viewModelScope.launch {
+            val history = searchHistoryInteractor.getHistoryList()
+            _uiState.postValue(_uiState.value?.copy(searchHistory = history))
+        }
     }
 
+    fun prepareTrackForPlaying(track: Track) {
+        viewModelScope.launch {
+            addTrackInHistory(track)
+        }
+    }
+
+    private suspend fun addTrackInHistory(track: Track) {
+        searchHistoryInteractor.addTrackInHistory(track)
+        playerInteractor.setCurrentTrack(track)
+        getHistoryList()
+    }
 
     suspend fun clearSearchHistory() {
         searchHistoryInteractor.clearHistory()
+        _uiState.postValue(_uiState.value?.copy(searchHistory = emptyList()))
     }
-    private val mediatorStateLiveData = MediatorLiveData<TrackState>().also { liveData ->
-        liveData.addSource(searchLiveData) { trackState ->
-            liveData.value = when (trackState) {
-                is TrackState.Content -> TrackState.Content(trackState.tracks)
-                is TrackState.Empty -> trackState
-                is TrackState.Error -> trackState
-                is TrackState.Loading -> trackState
-            }
-        }
+
+    override fun onCleared() {
+        super.onCleared()
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 }
-
