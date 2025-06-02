@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/size_61dp"
+    android:layout_marginTop="2dp"
+
+    android:orientation="horizontal"
+    android:id="@+id/viewForTracks">
+
+    <ImageView
+
+        android:layout_marginEnd="@dimen/size_5dp"
+        android:layout_width="@dimen/dpnine"
+        android:layout_height="@dimen/dpnine"
+
+        android:layout_gravity="center_vertical"
+        android:id="@+id/imageTrack" />
+
+    <LinearLayout
+        android:layout_width="@dimen/size_0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/SongName"
+            android:id="@+id/nameOfTrack"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:letterSpacing="0"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textFontWeight="400"
+            tools:text="NoNo replyNo replyNo replyNo replyNo replyNo reply reply"
+            android:layout_marginTop="@dimen/size_14dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+
+                android:maxLines="1"
+                android:textFontWeight="400"
+                tools:text="NoNo replyNo replplyNoNo replyN replyNo replyNo reply reply"
+                android:id="@+id/singerOfTrack"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:letterSpacing="0"
+                style="@style/SingerName" />
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/size_5dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/dot"
+                android:layout_marginTop="@dimen/size_5dp" />
+
+            <TextView
+                android:id="@+id/timeOfTrack"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                tools:text="2:55"
+                android:letterSpacing="0"
+                android:textFontWeight="400"
+                style="@style/TrackTime"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/size_8dp"
+        android:layout_marginEnd="@dimen/size_12dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/trackbtn" />
+</LinearLayout>

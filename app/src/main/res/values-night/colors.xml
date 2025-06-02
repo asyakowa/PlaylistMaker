@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="blue">#3772E7</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="iconcolor">#1A1B22</color>
+    <color name="grey">#AEAFB4</color>
+    <color name="colorfortrack">#9FBBF3</color>
+    <color name="colorsettingsbtn">#000000</color>
+    <color name="thumbTint">#3772E7</color>
+    <color name="transparent">#00000000</color>
+    <color name="lightblue">#9FBBF3</color>
+    <color name="backbutton_tint">#FFFFFF</color>
+    <color name="backgroundTintsettings">#FFFFFF</color>
+    <color name="searchColorBtn">#E6E8EB</color>
+    <color name="searchBack">#1A1B22</color>
+    <color name="textColorHint">#1A1B22</color>
+    <color name="clearicon">#1A1B22</color>
+    <color name="songname">#FFFFFF</color>
+    <color name="placeholderTextColor">#FFFFFF</color>
+    <color name="updatebtTextColor">#1A1B22</color>
+    <color name="updatebtbackgroundTintColor">#FFFFFF</color>
+    <color name="clearHistoryBtnText">#1A1B22</color>
+    <color name="clearHistoryBtnBckdTint">#FFFFFF</color>
+    <color name="searchHistory">#FFFFFF</color>
+    <color name="songNameAudioplayer">#FFFFFF</color>
+    <color name="artistNameAudioplayer">#FFFFFF</color>
+    <color name="mainInfoTrackAudioplayer">#AEAFB4</color>
+    <color name="mainInfoValueTrackAudioplayer">#FFFFFF</color>
+    <color name="colorForCurrentSongTime">#FFFFFF</color>
+    <color name="colorBackgroundActivityAudioplayer">#1A1B22</color>
+    <color name="colorThemeForButtons">#1A1B22</color>
+    <color name="colorThemeForButtons2">#FFFFFF</color>
+    <color name="colorThemeForButtons3">#FFFFFF</color>
+    <color name="colorProgressBar">#3772E7</color>
+</resources>

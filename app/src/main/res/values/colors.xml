@@ -16,4 +16,22 @@
     <color name="searchColorBtn">#E6E8EB</color>
     <color name="searchBack">#FFFFFFFF</color>
     <color name="textColorHint">#AEAFB4</color>
+    <color name="clearicon">#AEAFB4</color>
+    <color name="songname">#000000</color>
+    <color name="placeholderTextColor">#1A1B22</color>
+    <color name="updatebtTextColor">#FFFFFFFF</color>
+    <color name="updatebtbackgroundTintColor">#1A1B22</color>
+    <color name="clearHistoryBtnText">#FFFFFF</color>
+    <color name="clearHistoryBtnBckdTint">#1A1B22</color>
+    <color name="searchHistory">#1A1B22</color>
+    <color name="songNameAudioplayer">#1A1B22</color>
+    <color name="artistNameAudioplayer">#1A1B22</color>
+    <color name="mainInfoTrackAudioplayer">#AEAFB4</color>
+    <color name="mainInfoValueTrackAudioplayer">#1A1B22</color>
+    <color name="colorForCurrentSongTime">#1A1B22</color>
+    <color name="colorBackgroundActivityAudioplayer">#FFFFFF</color>
+    <color name="colorThemeForButtons">#FFFFFF</color>
+    <color name="colorThemeForButtons2">#1A1B22</color>
+    <color name="colorThemeForButtons3">#1A1B22</color>
+    <color name="colorProgressBar">#3772E7</color>
 </resources>
