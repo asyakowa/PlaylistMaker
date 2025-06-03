@@ -19,7 +19,6 @@ val interactorModule = module {
     single <AudioplayerInteractor>{
         AudioplayerInteractorImpl(get())
     }
-
     single<Audioplayer> {
         AudioplayerImpl(get())
     }
@@ -27,7 +26,7 @@ val interactorModule = module {
         SearchHistoryInteractorImpl(get())
 
     }
-        single <TracksInteractor> {
+    single <TracksInteractor> {
         TracksInteractorImpl(get())
     }
 
@@ -37,4 +36,4 @@ val interactorModule = module {
     single <SharingInteractor>{
         SharingInteractorImpl(get(), get())
     }
- }
+}
