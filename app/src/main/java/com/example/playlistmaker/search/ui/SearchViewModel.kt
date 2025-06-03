@@ -6,6 +6,10 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+<<<<<<< HEAD
+=======
+
+>>>>>>> b69ea5a (17 cпринт)
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmakersearch.domain.api.TracksInteractor
 import androidx.lifecycle.viewModelScope

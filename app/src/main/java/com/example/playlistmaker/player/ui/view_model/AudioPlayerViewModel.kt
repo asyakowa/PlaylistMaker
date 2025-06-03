@@ -69,6 +69,7 @@ class AudioPlayerViewModel(
         return playStatusLiveData.value ?: PlayStatus(progress = "00:00", isPlaying = false)
     }
 
+<<<<<<< HEAD
 
 
     fun formatTime(progress: Long): String {
@@ -100,5 +101,7 @@ class AudioPlayerViewModel(
             "—"
         }
     }
+=======
+>>>>>>> b69ea5a (17 cпринт)
 }
 

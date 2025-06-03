@@ -70,5 +70,4 @@ class AudioplayerImpl(
         currentObserver = null
         lastProgressPosition = 0f
     }
-
 }

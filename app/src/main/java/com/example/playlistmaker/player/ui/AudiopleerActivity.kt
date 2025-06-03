@@ -119,5 +119,3 @@ class AudiopleerActivity : AppCompatActivity() {
         }
 
     }}
-
-
