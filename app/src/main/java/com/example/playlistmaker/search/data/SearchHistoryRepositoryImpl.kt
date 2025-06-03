@@ -1,6 +1,5 @@
 package com.example.playlistmaker.data
 
-
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -17,7 +16,6 @@ class SearchHistoryRepositoryImpl(
     companion object {
     val HISTORY_KEY = "search_history"
     val MAX_HISTORY_SIZE = 10
-    private val gson = Gson()
     }
 
     override suspend fun clearHistory() {

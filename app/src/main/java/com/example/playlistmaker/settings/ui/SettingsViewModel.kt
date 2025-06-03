@@ -3,11 +3,6 @@ package com.example.playlistmaker.settings.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.creator.Creator.application
 import com.example.playlistmaker.settings.domain.api.SettingsInteractor
 import com.example.playlistmaker.settings.ui.model.ThemeSettings
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
@@ -73,13 +68,4 @@ private val navigationEvents = MutableLiveData<SettingsEvent>()
         )
     }
 
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val settingsInteractor = Creator.provideSettingsInteractor(application)
-                val sharingInteractor = Creator.provideSharingInteractor()
-                SettingsViewModel(sharingInteractor, settingsInteractor)
-            }
-        }
-    }
 }

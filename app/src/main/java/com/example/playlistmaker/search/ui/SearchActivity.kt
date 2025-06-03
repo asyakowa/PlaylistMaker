@@ -10,13 +10,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.content.Intent
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.AudiopleerActivity
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -25,10 +25,8 @@ class SearchActivity : AppCompatActivity() {
         private const val KEY_CHOSEN_TRACK = "KEY_CHOSEN_TRACK"
     }
 
-    private val viewModel by viewModels<SearchViewModel> {
-        SearchViewModel.getViewModelFactory()
-    }
 
+private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: ActivitySearchBinding
     private lateinit var simpleTextWatcher: TextWatcher
 
