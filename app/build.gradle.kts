@@ -61,5 +61,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10")
     implementation ("androidx.activity:activity-ktx:1.6.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation ("io.insert-koin:koin-android:3.3.0")
+
 
 }

@@ -3,7 +3,12 @@ package com.example.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.creator.Creator
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
+import com.example.playlistmaker.di.dataModule
+import com.example.playlistmaker.di.interactorModule
+import com.example.playlistmaker.di.repositoryModule
+import com.example.playlistmaker.di.viewModelModule
 
 
 class App : Application() {
@@ -17,8 +22,13 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Creator.initApplication(this)
-        Creator.init(getSharedPreferences("SEARCH_HISTORY", MODE_PRIVATE))
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule,
+                repositoryModule, interactorModule, viewModelModule
+            )
+        }
+
         sharedPrefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE)
         darkTheme = sharedPrefs.getBoolean(EDIT_TEXT_KEY, false)
     }

@@ -5,10 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.ui.model.PlayStatus
 import com.example.playlistmaker.player.ui.model.TrackScreenState
@@ -100,15 +96,6 @@ private var loadingLiveData = MutableLiveData(true)
 
     private fun getCurrentPlayStatus(): PlayStatus {
         return playStatusLiveData.value ?: PlayStatus(progress ="00:00", isPlaying = false)
-    }
-
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val trackPlayer = Creator.provideAudioplayer()
-                AudioPlayerViewModel(trackPlayer)
-            }
-        }
     }
 
 }

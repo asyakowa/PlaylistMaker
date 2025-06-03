@@ -3,7 +3,6 @@ package com.example.playlistmaker.player.ui
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -14,12 +13,13 @@ import com.example.playlistmaker.databinding.ActivityAudiopleerBinding
 import com.example.playlistmaker.player.ui.model.TrackScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 const val KEY_CHOSEN_TRACK = "chosen_track"
 class AudiopleerActivity : AppCompatActivity() {
-    private val viewModel by viewModels<AudioPlayerViewModel>
-    {AudioPlayerViewModel.getViewModelFactory() }
+
+private val viewModel by viewModel<AudioPlayerViewModel>()
     private lateinit var binding:  ActivityAudiopleerBinding
     private var isPlaying = false
     private lateinit var playIcon : Drawable

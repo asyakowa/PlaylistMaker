@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,13 +12,11 @@ import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.main.ui.MainActivity
 import com.example.playlistmaker.settings.ui.model.NavigationEvent
 import com.example.playlistmaker.settings.ui.model.SettingsEvent
-
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingsActivity : AppCompatActivity() {
-    private val viewModel by viewModels<SettingsViewModel> { SettingsViewModel.getViewModelFactory() }
-
+private val viewModel by viewModel<SettingsViewModel>()
     private lateinit var binding: ActivitySettingsBinding
 
 override fun onCreate(savedInstanceState: Bundle?) {

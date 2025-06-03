@@ -51,120 +51,65 @@ class AudioplayerImpl   (repository: AudioplayerRepository ) : Audioplayer {
     override fun pause() {
 
         mediaPlayer?.let { player ->
-
             if (player.isPlaying) {
-
                 player.pause()
-
                 isPlay = false
-
                 lastProgressPosition = formatMilliseconds(player.currentPosition)
-
                 currentObserver?.onPause()
-
                 stopProgressUpdates()
 
             }
-
         }
-
     }
-
-
 
 
     override fun seek(position: Float) {
-
         val milliseconds = parseTimeToMilliseconds(position)
-
         mediaPlayer?.seekTo(milliseconds)
-
         lastProgressPosition = position
-
     }
-
-
-
 
     override fun release() {
 
         stopProgressUpdates()
-
         mediaPlayer?.release()
-
         mediaPlayer = null
-
         isPrepared = false
-
         isPlay = false
-
         currentObserver = null
-
         lastProgressPosition = 0f
 
     }
 
-
-
-
     private val progressUpdateRunnable = object : Runnable {
-
         override fun run() {
-
             mediaPlayer?.let { player ->
-
                 if (player.isPlaying) {
-
                     lastProgressPosition = formatMilliseconds(player.currentPosition)
-
                     currentObserver?.onProgress(lastProgressPosition)
-
                     progressHandler.postDelayed(this, 1000)
-
                 }
-
             }
-
         }
-
     }
 
-
-
-
     private fun startProgressUpdates() {
-
         progressHandler.removeCallbacks(progressUpdateRunnable)
-
         progressHandler.postDelayed(progressUpdateRunnable, 50)
 
     }
 
-
-
-
     private fun stopProgressUpdates() {
-
         progressHandler.removeCallbacks(progressUpdateRunnable)
 
     }
 
-
-
-
     private fun formatMilliseconds(millis: Int): Float {
-
         return millis / 1000f
-
     }
 
-
-
-
     private fun parseTimeToMilliseconds(time: Float): Int {
-
         return (time * 1000).toInt()
-
     }
 
 }
