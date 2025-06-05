@@ -1,115 +1,70 @@
 package com.example.playlistmaker.player.domain.impl
 
-import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.domain.AudioplayerRepository
 import com.example.playlistmaker.search.domain.models.Track
 
-class AudioplayerImpl   (repository: AudioplayerRepository ) : Audioplayer {
-    private val track = repository.getCurrentTrack()
-    private val trackUrl = track.previewUrl
-    private var mediaPlayer: MediaPlayer? = null
-    private var currentObserver: Audioplayer.StatusObserver? = null
+class AudioplayerImpl(
+    private val repository: AudioplayerRepository
+) : Audioplayer {
+
     private var isPrepared = false
     private var isPlay = false
-    private val progressHandler = Handler(Looper.getMainLooper())
     private var lastProgressPosition = 0f
+    private var currentObserver: Audioplayer.StatusObserver? = null
 
     override fun prepare(prepareCallback: (Track) -> Unit) {
-        mediaPlayer?.release()
-        mediaPlayer = MediaPlayer().apply {
-
-            setDataSource(trackUrl)
-            prepareAsync()
-            setOnPreparedListener {
+        val currentTrack = repository.getCurrentTrack()
+        repository.preparePlayer(
+            currentTrack.previewUrl,
+            onPrepared = {
                 isPrepared = true
-                prepareCallback(track)
-            }
-            setOnCompletionListener {
+                prepareCallback(currentTrack)
+            },
+            onCompletion = {
                 isPlay = false
                 currentObserver?.onCompletion()
             }
-        }
+        )
     }
 
-    override fun play(statusObserver:  Audioplayer.StatusObserver) {
+    override fun play(statusObserver: Audioplayer.StatusObserver) {
         currentObserver = statusObserver
-        if (isPrepared) {
-            if (!isPlay) {
-                if (lastProgressPosition == 0f) {
-                    mediaPlayer?.seekTo(0)
-                }
-                mediaPlayer?.start()
-                isPlay = true
-                statusObserver.onPlay()
-                startProgressUpdates()
+        if (isPrepared && !isPlay) {
+            if (lastProgressPosition != 0f) {
+                repository.seekTo(lastProgressPosition)
+            }
+            repository.play()
+            isPlay = true
+            statusObserver.onPlay()
+            repository.startProgressTracking { position ->
+                lastProgressPosition = position
+                currentObserver?.onProgress(position)
             }
         }
     }
+
     override fun pause() {
-
-        mediaPlayer?.let { player ->
-            if (player.isPlaying) {
-                player.pause()
-                isPlay = false
-                lastProgressPosition = formatMilliseconds(player.currentPosition)
-                currentObserver?.onPause()
-                stopProgressUpdates()
-
-            }
+        if (repository.isPlaying()) {
+            repository.pause()
+            isPlay = false
+            lastProgressPosition = repository.getCurrentPosition()
+            currentObserver?.onPause()
+            repository.stopProgressTracking()
         }
     }
-
 
     override fun seek(position: Float) {
-        val milliseconds = parseTimeToMilliseconds(position)
-        mediaPlayer?.seekTo(milliseconds)
+        repository.seekTo(position)
         lastProgressPosition = position
     }
 
     override fun release() {
-
-        stopProgressUpdates()
-        mediaPlayer?.release()
-        mediaPlayer = null
+        repository.stopProgressTracking()
+        repository.release()
         isPrepared = false
         isPlay = false
         currentObserver = null
         lastProgressPosition = 0f
-
     }
-
-    private val progressUpdateRunnable = object : Runnable {
-        override fun run() {
-            mediaPlayer?.let { player ->
-                if (player.isPlaying) {
-                    lastProgressPosition = formatMilliseconds(player.currentPosition)
-                    currentObserver?.onProgress(lastProgressPosition)
-                    progressHandler.postDelayed(this, 1000)
-                }
-            }
-        }
-    }
-
-    private fun startProgressUpdates() {
-        progressHandler.removeCallbacks(progressUpdateRunnable)
-        progressHandler.postDelayed(progressUpdateRunnable, 50)
-
-    }
-
-    private fun stopProgressUpdates() {
-        progressHandler.removeCallbacks(progressUpdateRunnable)
-
-    }
-
-    private fun formatMilliseconds(millis: Int): Float {
-        return millis / 1000f
-    }
-
-    private fun parseTimeToMilliseconds(time: Float): Int {
-        return (time * 1000).toInt()
-    }
-
 }

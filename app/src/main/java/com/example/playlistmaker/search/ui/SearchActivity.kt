@@ -22,9 +22,9 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val KEY_CHOSEN_TRACK = "KEY_CHOSEN_TRACK"
-    }
+        const val KEY_CHOSEN_TRACK = "chosen_track"
 
+    }
 
 private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: ActivitySearchBinding
@@ -102,7 +102,8 @@ private val viewModel by viewModel<SearchViewModel>()
 
             binding.historyView2.isVisible = binding.historyView.isVisible
             binding.clearSearchButton.isVisible = binding.historyView.isVisible
-            binding.recyclerView.isVisible = state.searchResults.isNotEmpty()
+            binding.recyclerView.isVisible =
+                state.searchResults.isNotEmpty() && state.searchText.isNotBlank()
             binding.updateButton.isVisible = state.isError || state.isEmpty
             if (binding.inputEditText.text.toString() != state.searchText) {
                 binding.inputEditText.setText(state.searchText)
@@ -170,6 +171,7 @@ private val viewModel by viewModel<SearchViewModel>()
 
     override fun onDestroy() {
         super.onDestroy()
+
         binding.inputEditText.removeTextChangedListener(simpleTextWatcher)
     }
 }
