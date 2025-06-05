@@ -22,15 +22,9 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-<<<<<<< HEAD
         const val KEY_CHOSEN_TRACK = "chosen_track"
 
     }
-=======
-        private const val KEY_CHOSEN_TRACK = "KEY_CHOSEN_TRACK"
-    }
-
->>>>>>> b69ea5a (17 cпринт)
 
     private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: ActivitySearchBinding

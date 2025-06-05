@@ -22,6 +22,7 @@ val dataModule = module {
     }
     factory { Gson() }
 
+
     single {
         androidContext()
             .getSharedPreferences("search_history", Context.MODE_PRIVATE)
