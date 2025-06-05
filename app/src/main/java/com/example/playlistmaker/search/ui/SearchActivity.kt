@@ -22,17 +22,11 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-<<<<<<< HEAD
         const val KEY_CHOSEN_TRACK = "chosen_track"
 
     }
-=======
-        private const val KEY_CHOSEN_TRACK = "KEY_CHOSEN_TRACK"
-    }
 
->>>>>>> b69ea5a (17 cпринт)
-
-private val viewModel by viewModel<SearchViewModel>()
+    private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: ActivitySearchBinding
     private lateinit var simpleTextWatcher: TextWatcher
 
@@ -56,14 +50,14 @@ private val viewModel by viewModel<SearchViewModel>()
 
     private fun initAdapters() {
 
-      trackAdapter.onItemClick = { track ->
+        trackAdapter.onItemClick = { track ->
 
-        if (clickDebounce()) {
-            viewModel.prepareTrackForPlaying(track)
-            val intent = Intent(this, AudiopleerActivity::class.java)
-            intent.putExtra(KEY_CHOSEN_TRACK, Gson().toJson(track))
-            startActivity(intent)
-        }
+            if (clickDebounce()) {
+                viewModel.prepareTrackForPlaying(track)
+                val intent = Intent(this, AudiopleerActivity::class.java)
+                intent.putExtra(KEY_CHOSEN_TRACK, Gson().toJson(track))
+                startActivity(intent)
+            }
         }
 
         binding.recyclerView.adapter = trackAdapter
