@@ -3,7 +3,8 @@ package com.example.playlistmaker.player.domain
 import com.example.playlistmaker.search.domain.models.Track
 
 interface Audioplayer {
-    fun prepare(prepareCallback: (Track) -> Unit)
+fun prepare(callback: (Track) -> Unit)
+
     fun play(statusObserver: StatusObserver)
     fun pause()
     fun seek(position: Float)

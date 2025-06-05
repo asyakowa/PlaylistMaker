@@ -16,9 +16,9 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
 
-single <AudioplayerRepository>{
-    AudioplayerRepositoryImpl
-}
+    single<AudioplayerRepository> {
+        AudioplayerRepositoryImpl()
+    }
     single <SettingsRepository> {
         SettingsRepositoryImpl(get())
     }

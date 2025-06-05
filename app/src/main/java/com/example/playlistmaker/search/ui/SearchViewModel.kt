@@ -6,7 +6,6 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmakersearch.domain.api.TracksInteractor
 import androidx.lifecycle.viewModelScope
@@ -14,7 +13,6 @@ import com.example.playlistmaker.player.domain.AudioplayerInteractor
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.models.TrackState
 import kotlinx.coroutines.launch
-
 
 class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor,
@@ -33,8 +31,22 @@ class SearchViewModel(
     val uiState: LiveData<TrackState> = _uiState
 
     private var lastSearchedRequest: String? = null
+
     fun onSearchTextChanged(newText: String) {
         _uiState.value = _uiState.value?.copy(searchText = newText)
+
+        if (newText.isBlank()) {
+
+
+            _uiState.value = _uiState.value?.copy(
+                searchResults = emptyList(),
+                isLoading = false,
+                isEmpty = false,
+                isError = false
+            )
+            return
+        }
+
         viewModelScope.launch {
             searchRequest(newText)
         }
@@ -47,6 +59,7 @@ class SearchViewModel(
         _uiState.value = _uiState.value?.copy(searchText = changedText)
 
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+
         val searchRunnable = Runnable {
             viewModelScope.launch {
                 searchRequest(changedText)
@@ -56,12 +69,14 @@ class SearchViewModel(
         val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
         handler.postAtTime(searchRunnable, SEARCH_REQUEST_TOKEN, postTime)
     }
+
     fun search(newSearchText: String) {
         viewModelScope.launch {
             searchRequest(newSearchText)
         }
     }
-     suspend fun searchRequest(newSearchText: String) {
+
+    private suspend fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             _uiState.postValue(_uiState.value?.copy(
                 isLoading = true,
@@ -82,12 +97,11 @@ class SearchViewModel(
                 }
             })
         } else {
-
             _uiState.postValue(_uiState.value?.copy(
                 searchResults = emptyList(),
+                isLoading = false,
                 isEmpty = false,
-                isError = false,
-                isLoading = false
+                isError = false
             ))
         }
     }
@@ -121,3 +135,4 @@ class SearchViewModel(
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 }
+
