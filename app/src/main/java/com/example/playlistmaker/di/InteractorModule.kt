@@ -19,6 +19,7 @@ val interactorModule = module {
     single <AudioplayerInteractor>{
         AudioplayerInteractorImpl(get())
     }
+
     single<Audioplayer> {
         AudioplayerImpl(get())
     }

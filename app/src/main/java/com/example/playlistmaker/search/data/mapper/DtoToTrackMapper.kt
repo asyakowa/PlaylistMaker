@@ -1,7 +1,7 @@
 package com.example.playlistmaker.search.data.mapper
 
 import com.example.playlistmaker.search.data.dto.TrackDTO
- import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
