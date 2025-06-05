@@ -2,7 +2,6 @@ package com.example.playlistmaker.player.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -43,9 +42,9 @@ class AudiopleerActivity : AppCompatActivity() {
 
         val json = intent.getStringExtra(KEY_CHOSEN_TRACK)
         if (json == null) {
-            Log.e("AudiopleerActivity", "Track JSON is null!")
+
         } else {
-            Log.d("AudiopleerActivity", "Received JSON track: $json")
+
             val track = Gson().fromJson(json, Track::class.java)
             viewModel.prepareTrack()
 
