@@ -6,19 +6,18 @@ import android.os.Looper
 import com.example.playlistmaker.player.domain.AudioplayerRepository
 import com.example.playlistmaker.search.domain.models.Track
 
-class AudioplayerRepositoryImpl : AudioplayerRepository {
 
-    private var mediaPlayer: MediaPlayer = MediaPlayer()
-    private var isReleased = false
+class AudioplayerRepositoryImpl(
+    private val mediaPlayer: MediaPlayer
+) : AudioplayerRepository {
 
     private var currentTrack: Track? = null
-
     private val handler = Handler(Looper.getMainLooper())
     private var progressCallback: ((Float) -> Unit)? = null
 
     private val progressRunnable = object : Runnable {
         override fun run() {
-            if (!isReleased && mediaPlayer.isPlaying) {
+            if (mediaPlayer.isPlaying) {
                 val currentPosition = mediaPlayer.currentPosition / 1000f
                 progressCallback?.invoke(currentPosition)
                 handler.postDelayed(this, 300)
@@ -37,47 +36,43 @@ class AudioplayerRepositoryImpl : AudioplayerRepository {
         onPrepared: () -> Unit,
         onCompletion: () -> Unit
     ) {
-        if (isReleased) {
-            mediaPlayer = MediaPlayer()
-            isReleased = false
-        }
+        try {
+            mediaPlayer.reset()
+            mediaPlayer.setDataSource(url)
+            mediaPlayer.setOnPreparedListener { onPrepared() }
+            mediaPlayer.setOnCompletionListener {
+                stopProgressTracking()
+                onCompletion()
+            }
+            mediaPlayer.prepareAsync()
+        } catch (e: Exception) {
 
-        mediaPlayer.reset()
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.setOnPreparedListener { onPrepared() }
-        mediaPlayer.setOnCompletionListener {
-            stopProgressTracking()
-            onCompletion()
         }
-        mediaPlayer.prepareAsync()
     }
 
     override fun play() {
-        if (!isReleased) mediaPlayer.start()
+        mediaPlayer.start()
     }
 
     override fun pause() {
-        if (!isReleased && mediaPlayer.isPlaying) mediaPlayer.pause()
+        if (mediaPlayer.isPlaying) mediaPlayer.pause()
     }
 
     override fun release() {
-        if (!isReleased) {
-            stopProgressTracking()
-            mediaPlayer.release()
-            isReleased = true
-        }
+        stopProgressTracking()
+        mediaPlayer.stop()
     }
 
     override fun seekTo(position: Float) {
-        if (!isReleased) mediaPlayer.seekTo((position * 1000).toInt())
+        mediaPlayer.seekTo((position * 1000).toInt())
     }
 
     override fun getCurrentPosition(): Float {
-        return if (!isReleased) mediaPlayer.currentPosition / 1000f else 0f
+        return mediaPlayer.currentPosition / 1000f
     }
 
     override fun isPlaying(): Boolean {
-        return !isReleased && mediaPlayer.isPlaying
+        return mediaPlayer.isPlaying
     }
 
     override fun startProgressTracking(onProgress: (Float) -> Unit) {
@@ -90,4 +85,3 @@ class AudioplayerRepositoryImpl : AudioplayerRepository {
         progressCallback = null
     }
 }
-

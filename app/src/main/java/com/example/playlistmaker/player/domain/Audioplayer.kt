@@ -8,6 +8,7 @@ fun prepare(callback: (Track) -> Unit)
     fun play(statusObserver: StatusObserver)
     fun pause()
     fun seek(position: Float)
+    fun setCurrentTrack(track: Track)
 
     fun release()
 

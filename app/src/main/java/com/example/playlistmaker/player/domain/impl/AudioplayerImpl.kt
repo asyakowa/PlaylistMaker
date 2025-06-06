@@ -27,6 +27,10 @@ class AudioplayerImpl(
             }
         )
     }
+    override fun setCurrentTrack(track: Track) {
+        repository.setCurrentTrack(track)
+    }
+
 
     override fun play(statusObserver: Audioplayer.StatusObserver) {
         currentObserver = statusObserver
@@ -58,13 +62,13 @@ class AudioplayerImpl(
         repository.seekTo(position)
         lastProgressPosition = position
     }
-
     override fun release() {
+        repository.pause()
         repository.stopProgressTracking()
-        repository.release()
         isPrepared = false
         isPlay = false
         currentObserver = null
         lastProgressPosition = 0f
     }
+
 }

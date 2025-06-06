@@ -6,20 +6,16 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.ui.model.PlayStatus
 import com.example.playlistmaker.player.ui.model.TrackScreenState
+import com.example.playlistmaker.search.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-
 class AudioPlayerViewModel(
     private val audioplayer: Audioplayer
 ) : ViewModel() {
 
-    private var isReleased = false
-
     private var loadingLiveData = MutableLiveData(true)
-
-
     private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
 
@@ -27,9 +23,6 @@ class AudioPlayerViewModel(
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
 
     fun prepareTrack() {
-        if (isReleased) {
-            return
-        }
         playStatusLiveData.value = PlayStatus(progress = "00:00", isPlaying = false)
 
         audioplayer.prepare { track ->
@@ -38,7 +31,6 @@ class AudioPlayerViewModel(
     }
 
     fun play() {
-        if (isReleased) return
         audioplayer.play(
             statusObserver = object : Audioplayer.StatusObserver {
                 override fun onProgress(progress: Float) {
@@ -62,21 +54,22 @@ class AudioPlayerViewModel(
     }
 
     fun pause() {
-        if (!isReleased) {
-            audioplayer.pause()
-
-        }
+        audioplayer.pause()
     }
 
     override fun onCleared() {
         audioplayer.release()
-        isReleased = true
         super.onCleared()
+    }
+    fun setCurrentTrack(track: Track) {
+        audioplayer.setCurrentTrack(track)
     }
 
     private fun getCurrentPlayStatus(): PlayStatus {
         return playStatusLiveData.value ?: PlayStatus(progress = "00:00", isPlaying = false)
     }
+
+
 
     fun formatTime(progress: Long): String {
         val seconds = progress.toInt()
@@ -92,7 +85,7 @@ class AudioPlayerViewModel(
     fun formatYear(raw: String): String {
         return try {
             if (raw.contains("T")) {
-                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US) // 'X' для поддержки 'Z'
+                val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.US)
                 parser.timeZone = TimeZone.getTimeZone("UTC")
                 val date = parser.parse(raw)
                 val formatter = SimpleDateFormat("yyyy", Locale.getDefault())
@@ -107,6 +100,5 @@ class AudioPlayerViewModel(
             "—"
         }
     }
-
-
 }
+
