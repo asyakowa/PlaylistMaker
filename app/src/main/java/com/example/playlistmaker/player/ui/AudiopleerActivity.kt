@@ -46,6 +46,7 @@ class AudiopleerActivity : AppCompatActivity() {
         } else {
 
             val track = Gson().fromJson(json, Track::class.java)
+            viewModel.setCurrentTrack(track)
             viewModel.prepareTrack()
 
         }

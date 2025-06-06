@@ -5,6 +5,7 @@ interface AudioplayerRepository {
     fun setCurrentTrack(track: Track)
     fun getCurrentTrack(): Track
     fun preparePlayer(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit)
+
     fun play()
     fun pause()
     fun release()

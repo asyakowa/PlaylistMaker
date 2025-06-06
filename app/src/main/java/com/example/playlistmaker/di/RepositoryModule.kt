@@ -1,5 +1,6 @@
 package com.example.playlistmaker.di
 
+import android.media.MediaPlayer
 import com.example.playlistmaker.data.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.player.data.AudioplayerRepositoryImpl
 import com.example.playlistmaker.player.domain.AudioplayerRepository
@@ -13,12 +14,13 @@ import com.example.playlistmaker.sharing.data.impl.SharingRepositoryImpl
 import com.example.playlistmaker.sharing.domain.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.SharingRepository
 import org.koin.dsl.module
-
 val repositoryModule = module {
+    factory { MediaPlayer() }
 
-    single<AudioplayerRepository> {
-        AudioplayerRepositoryImpl()
+    factory<AudioplayerRepository> {
+        AudioplayerRepositoryImpl(get())
     }
+
     single <SettingsRepository> {
         SettingsRepositoryImpl(get())
     }
