@@ -6,6 +6,12 @@
     <string name="blacktheme">Темная тема</string>
     <string name="share">Поделиться приложением</string>
     <string name="texttosupport">Написать в поддержку</string>
+    <string name="nomedia">Ваша медиатека пуста</string>
+    <string name="no_playlists">Вы не создали \n ни одного плейлиста</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="fav_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
+
 
     <string name="bckbt">Кнопка Назад</string>
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/MediaBackground"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/media_tracklist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+        tools:listitem="@layout/track_layout"
+        tools:itemCount="15"/>
+
+    <LinearLayout
+        android:id="@+id/noFavs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_marginTop="106dp"
+            android:layout_width="@dimen/size_120dp"
+            android:layout_height="@dimen/size_120dp"
+            android:src="@drawable/err_srch"
+              android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:fontFamily="@font/ys_display_medium"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:textSize="@dimen/size_19sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textFontWeight="400"
+            android:gravity="center"
+            style="@style/NoFavTracks"
+            android:text="@string/nomedia"/>
+    </LinearLayout>
+
+</FrameLayout>

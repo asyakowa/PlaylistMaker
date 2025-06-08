@@ -34,4 +34,9 @@
     <color name="colorThemeForButtons2">#1A1B22</color>
     <color name="colorThemeForButtons3">#1A1B22</color>
     <color name="colorProgressBar">#3772E7</color>
+    <color name="colorMedia">#FFFFFFFF</color>
+    <color name="tabIndicatorColor">#1A1B22</color>
+    <color name="tabTextColor">#1A1B22</color>
+    <color name="backgroundTab">#FFFFFFFF</color>
+
 </resources>

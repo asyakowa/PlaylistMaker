@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MediaBackground"
+    android:orientation="vertical">
+
+    <Button
+        style="@style/AddPlaylist"
+        app:cornerRadius="54dp"
+        android:letterSpacing="0.00"
+        android:fontFamily="@font/ys_display_medium"
+        android:id="@+id/add_playlist_btn"
+        android:layout_marginTop="@dimen/size_24dp"
+        android:textFontWeight = "500"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/size_14sp"
+        android:text="@string/new_playlist" />
+
+    <LinearLayout
+        android:textFontWeight="500"
+        android:id="@+id/noPlaylists"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="106dp"
+            android:src="@drawable/err_srch" />
+
+        <TextView
+            style="@style/NoPlayLists"
+            android:textAlignment="center"
+            android:textSize="@dimen/size_19sp"
+            android:fontFamily="@font/ys_display_medium"
+            android:layout_marginHorizontal="@dimen/size_14dp"
+            android:layout_marginTop="@dimen/size_16dp"
+             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:text="@string/no_playlists" />
+    </LinearLayout>
+
+
+</FrameLayout>
