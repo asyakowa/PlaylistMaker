@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:fontFamily="@font/ys_display_medium"
             android:textFontWeight="500"
-            android:text="Медиатека"
+            android:text="@string/Media"
             android:textColor="@color/backbutton_tint"
             android:layout_marginStart="@dimen/size_0dp" />
 

@@ -30,9 +30,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        MediaViewModel(get())
+        MediaViewModel()
     }
-
-
 
 }
