@@ -14,6 +14,7 @@ import com.example.playlistmaker.sharing.data.impl.SharingRepositoryImpl
 import com.example.playlistmaker.sharing.domain.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.SharingRepository
 import org.koin.dsl.module
+
 val repositoryModule = module {
     factory { MediaPlayer() }
 
