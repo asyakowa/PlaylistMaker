@@ -1,11 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/media"
+    android:background="@color/backgroundTab"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
     android:orientation="vertical"
-    android:padding="@dimen/dpthree">
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_56dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/backbutton"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/backbtn"
+            android:contentDescription="@string/bckbt"
+            android:layout_marginEnd="@dimen/size_30dp"
+            />
+
+
+        <TextView
+             android:textSize="@dimen/size_22sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/ys_display_medium"
+            android:textFontWeight="500"
+            android:text="@string/Media"
+            android:textColor="@color/backbutton_tint"
+            android:layout_marginStart="@dimen/size_0dp" />
+
+
+
+    </LinearLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        app:tabMode="fixed"
+        app:tabIndicatorHeight="@dimen/size_2dp"
+        app:tabIndicatorFullWidth="true"
+        app:tabRippleColor="@android:color/black"
+        app:tabTextColor="@color/tabTextColor"
+        app:tabIndicatorColor="@color/tabIndicatorColor"
+        app:tabTextAppearance="@style/TabTextStyle"
+        android:background="@color/backgroundTab"
+
+        />
+
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        style="@style/FragmentStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>
