@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/media"
     android:background="@color/backgroundTab"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:context=".media.MediaFragment">
     >
 
     <LinearLayout
@@ -14,16 +16,6 @@
         android:orientation="horizontal"
         android:layout_marginStart="@dimen/size_16dp"
         android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/backbutton"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/backbtn"
-            android:contentDescription="@string/bckbt"
-            android:layout_marginEnd="@dimen/size_30dp"
-            />
-
 
         <TextView
             android:textSize="@dimen/size_22sp"
@@ -34,8 +26,6 @@
             android:text="@string/Media"
             android:textColor="@color/backbutton_tint"
             android:layout_marginStart="@dimen/size_0dp" />
-
-
 
     </LinearLayout>
     <com.google.android.material.tabs.TabLayout
@@ -51,10 +41,7 @@
         app:tabIndicatorColor="@color/tabIndicatorColor"
         app:tabTextAppearance="@style/TabTextStyle"
         android:background="@color/backgroundTab"
-
         />
-
-
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

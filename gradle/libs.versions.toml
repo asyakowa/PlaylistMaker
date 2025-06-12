@@ -23,7 +23,7 @@ browser = "1.8.0"
 navigationeventAndroid = "1.0.0-alpha01"
 recyclerview = "1.4.0"
 googleMaterial = "1.12.0"
-
+navigation = "2.9.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -50,6 +50,8 @@ androidx-browser = { group = "androidx.browser", name = "browser", version.ref =
 androidx-navigationevent-android = { group = "androidx.navigationevent", name = "navigationevent-android", version.ref = "navigationeventAndroid" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "googleMaterial" }
+androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

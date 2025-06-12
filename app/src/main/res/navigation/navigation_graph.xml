@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/mediaaFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        tools:layout="@layout/fragment_search"
+        android:name="com.example.playlistmaker.search.ui.SearchFragment"
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mediaaFragment"
+        tools:layout="@layout/fragment_media"
+        android:name="com.example.playlistmaker.media.MediaFragment"
+        android:label="MediaFragment" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        tools:layout="@layout/fragment_settings"
+        android:name="com.example.playlistmaker.settings.ui.SettingsFragment"
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_self"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/audioPlayerFragment"
+        tools:layout="@layout/fragment_audiopleer"
+        android:name="com.example.playlistmaker.player.ui.AudioPlayerFragment"
+        android:label="AudioPlayerFragment" />
+    <fragment
+        android:id="@+id/favouriteFragment"
+        tools:layout="@layout/fragment_favorites"
+        android:name="com.example.playlistmaker.media.ui.view_model.fragments.FavoritesFragment"
+        android:label="FavoritesFragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/playlistFragment"
+        tools:layout="@layout/fragment_playlist"
+        android:name="com.example.playlistmaker.media.ui.view_model.fragments.PlaylistFragment"
+        android:label="PlaylistFragment" />
+</navigation>
