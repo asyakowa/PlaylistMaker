@@ -39,7 +39,8 @@ buildFeatures {
     viewBinding  = true
 }}
 dependencies {
-
+    implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.navigation)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/searchBack"
     android:orientation="vertical"
-
+    tools:context=".search.ui.SearchFragment">
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,14 +14,7 @@
         android:orientation="horizontal"
         android:layout_marginStart="@dimen/size_16dp"
         android:gravity="center_vertical">
-        <ImageView
-            android:id="@+id/backbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/backbtn"
-            android:contentDescription="@string/bckbt"
-            android:layout_marginEnd="30dp"
-            app:tint="@color/backbutton_tint" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,8 +27,7 @@
         android:layout_marginStart="@dimen/size_16dp"
         android:layout_marginEnd="@dimen/size_16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
             android:imeOptions="actionDone"
             android:singleLine="true"
@@ -66,12 +58,9 @@
             android:layout_gravity="end|center_vertical"
             android:scaleType="center"
             android:visibility="gone" />
-
     </FrameLayout>
 
-
     <LinearLayout
-
         android:id="@+id/ErrorSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -97,19 +86,11 @@
             android:id="@+id/ErrorSearchText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="@string/err_srch"
-
-
             />
-
-
     </LinearLayout>
 
-
-
     <LinearLayout
-
         android:id="@+id/ErrorSearch2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -124,7 +105,6 @@
             android:layout_gravity="center_horizontal" />
 
         <TextView
-
             style="@style/placeholderText"
             android:textFontWeight="400"
             android:textAlignment="center"
@@ -135,7 +115,6 @@
             android:id="@+id/ErrorSearchText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="@string/error_cnn"
             />
         <Button
@@ -156,9 +135,7 @@
             app:cornerRadius="54dp"
             android:visibility="gone"/>
 
-
     </LinearLayout>
-
 
 <LinearLayout
 android:layout_width="match_parent"
@@ -176,7 +153,6 @@ android:orientation="vertical">
     android:layout_height="wrap_content"
     android:id="@+id/historyView2"
     android:orientation="vertical">
-
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_marginHorizontal="@dimen/size_24dp"
@@ -202,7 +178,6 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size_10dp"
-
         android:layout_weight="1"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/track_layout"/>
@@ -218,24 +193,20 @@ android:orientation="vertical">
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_24dp"
         android:layout_gravity="center_horizontal"
-
         android:text="@string/clear_history" />
 
 </LinearLayout>
 
 <androidx.recyclerview.widget.RecyclerView
-
     android:id="@+id/recyclerView"
     android:layout_marginTop="@dimen/size_16dp"
     android:layout_marginStart="@dimen/dpfour"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/size_10dp"
-
     android:layout_weight="1"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:listitem="@layout/track_layout"/>
-
 
 </LinearLayout>
     </LinearLayout>
