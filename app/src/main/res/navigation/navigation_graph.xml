@@ -27,7 +27,7 @@
         android:name="com.example.playlistmaker.settings.ui.SettingsFragment"
         android:label="SettingsFragment" >
         <action
-            android:id="@+id/action_settingsFragment_self"
+            android:id="@+id/actionSettingsFragment"
             app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
