@@ -38,4 +38,10 @@
     <color name="tabIndicatorColor">#FFFFFFFF</color>
     <color name="tabTextColor">#FFFFFFFF</color>
     <color name="backgroundTab">#1A1B22</color>
+    <color name="frset">#1A1B22</color>
+ <color name="acroot">#1A1B22</color>
+    <color name="bottomnavigation">#1A1B22</color>
+    <color name="selectedColor">#3772E7</color>
+    <color name="defaultColor">#FFFFFFFF</color>
+
 </resources>

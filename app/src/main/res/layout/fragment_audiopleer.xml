@@ -5,15 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundActivityAudioplayer"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".player.ui.AudioPlayerFragment">
     >
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-
 
         <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -82,7 +79,6 @@
         android:textFontWeight="400"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constrainedWidth="true"
-
         />
 
     <ImageView
@@ -105,7 +101,6 @@
         app:layout_constraintTop_toBottomOf="@id/artistName"
         app:layout_constraintEnd_toStartOf="@id/likeBtn"
         android:padding="8dp"
-
         />
 
     <TextView

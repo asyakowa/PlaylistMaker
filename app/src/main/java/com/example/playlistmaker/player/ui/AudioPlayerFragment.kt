@@ -2,14 +2,17 @@ package com.example.playlistmaker.player.ui
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityAudiopleerBinding
+import com.example.playlistmaker.databinding.FragmentAudiopleerBinding
 import com.example.playlistmaker.player.ui.model.TrackScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
@@ -18,10 +21,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 const val KEY_CHOSEN_TRACK = "chosen_track"
-class AudiopleerActivity : AppCompatActivity() {
-
+class AudioPlayerFragment : Fragment() {
+    private var _binding: FragmentAudiopleerBinding? = null
+    private val binding get() = _binding!!
     private val viewModel by viewModel<AudioPlayerViewModel>()
-    private lateinit var binding:  ActivityAudiopleerBinding
     private var isPlaying = false
     private lateinit var playIcon : Drawable
     private lateinit var pauseIcon : Drawable
@@ -29,18 +32,20 @@ class AudiopleerActivity : AppCompatActivity() {
         const val INTENT_TRACK_KEY = "track_to_player"
         const val ERROR_TRACK_ID = -1
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAudiopleerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        _binding = FragmentAudiopleerBinding.inflate(inflater, container, false)
+        return binding.root
 
-
-
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupIcons()
         setupClickListeners()
         setupObservers()
 
-        val json = intent.getStringExtra(KEY_CHOSEN_TRACK)
+        val json = arguments?.getString(KEY_CHOSEN_TRACK)
+
         if (json == null) {
 
         } else {
@@ -52,8 +57,8 @@ class AudiopleerActivity : AppCompatActivity() {
         }
     }
     private fun setupIcons() {
-        playIcon = ContextCompat.getDrawable(this, R.drawable.playtrack)!!
-        pauseIcon = ContextCompat.getDrawable(this, R.drawable.pausetrack)!!
+        playIcon = ContextCompat.getDrawable(requireContext(), R.drawable.playtrack)!!
+        pauseIcon = ContextCompat.getDrawable(requireContext(), R.drawable.pausetrack)!!
 
     }
     private fun setupClickListeners() {
@@ -66,7 +71,7 @@ class AudiopleerActivity : AppCompatActivity() {
 
             }}
         binding.toolbar.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
 
 
         }}
@@ -107,15 +112,20 @@ class AudiopleerActivity : AppCompatActivity() {
     }
     fun setupObservers() {
 
-        viewModel.getScreenStateLiveData().observe(this) { screenState ->
+        viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> updateUI(screenState.trackModel)
                 is TrackScreenState.Loading -> changeContentVisibility(loading = true)
             }
         }
-        viewModel.getPlayStatusLiveData().observe(this) { playStatus ->
+        viewModel.getPlayStatusLiveData().observe(viewLifecycleOwner) { playStatus ->
             if(playStatus.isPlaying != isPlaying) updatePlayButton(playStatus.isPlaying)
             binding.currentSongTime.text = playStatus.progress
         }
 
-    }}
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
