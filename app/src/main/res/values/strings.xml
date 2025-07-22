@@ -33,6 +33,9 @@
     <string name="refresh">Обновить</string>
     <string name="clear_history">Очистить историю</string>
     <string name="search_history">Вы искали</string>
+    <string name="wr_request">Неверный запрос</string>
+    <string name="s_error">Серверная ошибка</string>
+
 
     <string name="duration">Длительность</string>
     <string name="albumofsong">Альбом</string>

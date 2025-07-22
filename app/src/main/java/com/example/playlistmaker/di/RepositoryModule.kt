@@ -27,7 +27,7 @@ val repositoryModule = module {
     }
 
     single <TrackRepository> {
-        TracksRepositoryImpl(get())
+        TracksRepositoryImpl(get(),get())
     }
     single <SharingRepository>{
         SharingRepositoryImpl(get())

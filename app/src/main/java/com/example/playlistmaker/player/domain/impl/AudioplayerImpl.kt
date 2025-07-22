@@ -12,6 +12,9 @@ class AudioplayerImpl(
     private var isPlay = false
     private var lastProgressPosition = 0f
     private var currentObserver: Audioplayer.StatusObserver? = null
+    override fun getDuration(): Int {
+        return repository.getDuration()
+    }
 
     override fun prepare(prepareCallback: (Track) -> Unit) {
         val currentTrack = repository.getCurrentTrack()
@@ -23,14 +26,17 @@ class AudioplayerImpl(
             },
             onCompletion = {
                 isPlay = false
+                val fullDuration = repository.getDuration().toFloat()
+                lastProgressPosition = fullDuration
+                currentObserver?.onProgress(fullDuration)
                 currentObserver?.onCompletion()
             }
         )
     }
+
     override fun setCurrentTrack(track: Track) {
         repository.setCurrentTrack(track)
     }
-
 
     override fun play(statusObserver: Audioplayer.StatusObserver) {
         currentObserver = statusObserver
@@ -62,6 +68,7 @@ class AudioplayerImpl(
         repository.seekTo(position)
         lastProgressPosition = position
     }
+
     override fun release() {
         repository.pause()
         repository.stopProgressTracking()
@@ -70,4 +77,15 @@ class AudioplayerImpl(
         currentObserver = null
         lastProgressPosition = 0f
     }
+
+    override fun isPlaying(): Boolean {
+        return repository.isPlaying()
+    }
+
+    override fun getCurrentPositionSec(): Float {
+        return repository.getCurrentPosition()
+    }
+
+
+
 }

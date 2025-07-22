@@ -14,4 +14,6 @@ interface AudioplayerRepository {
     fun isPlaying(): Boolean
     fun startProgressTracking(onProgress: (Float) -> Unit)
     fun stopProgressTracking()
+
+    fun getDuration(): Int
 }
