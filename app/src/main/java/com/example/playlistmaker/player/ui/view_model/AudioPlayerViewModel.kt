@@ -3,24 +3,31 @@ package com.example.playlistmaker.player.ui.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.ui.model.PlayStatus
 import com.example.playlistmaker.player.ui.model.TrackScreenState
 import com.example.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.math.ceil
+
 class AudioPlayerViewModel(
     private val audioplayer: Audioplayer
 ) : ViewModel() {
 
-    private var loadingLiveData = MutableLiveData(true)
-    private var screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
+    private val screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
 
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
     fun getPlayStatusLiveData(): LiveData<PlayStatus> = playStatusLiveData
+
+    private var timerJob: Job? = null
 
     fun prepareTrack() {
         playStatusLiveData.value = PlayStatus(progress = "00:00", isPlaying = false)
@@ -34,20 +41,23 @@ class AudioPlayerViewModel(
         audioplayer.play(
             statusObserver = object : Audioplayer.StatusObserver {
                 override fun onProgress(progress: Float) {
-                    playStatusLiveData.value = getCurrentPlayStatus()
-                        .copy(progress = formatTime(progress.toLong()))
+
                 }
 
                 override fun onPause() {
                     playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
+                    stopUpdatingTime()
                 }
 
                 override fun onPlay() {
                     playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = true)
+                    startUpdatingTime()
                 }
 
                 override fun onCompletion() {
+                    audioplayer.seek(0f)
                     playStatusLiveData.value = PlayStatus(progress = "00:00", isPlaying = false)
+                    stopUpdatingTime()
                 }
             }
         )
@@ -55,14 +65,41 @@ class AudioPlayerViewModel(
 
     fun pause() {
         audioplayer.pause()
+        stopUpdatingTime()
+        playStatusLiveData.value = getCurrentPlayStatus().copy(isPlaying = false)
+    }
+
+    private fun startUpdatingTime() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (audioplayer.isPlaying()) {
+                delay(TIMER_DELAY)
+                val currentPosition = audioplayer.getCurrentPositionSec() // Float
+                playStatusLiveData.postValue(
+                    getCurrentPlayStatus().copy(progress = formatTime(currentPosition))
+                )
+            }
+        }
+    }
+
+
+    private fun stopUpdatingTime() {
+        timerJob?.cancel()
     }
 
     override fun onCleared() {
         audioplayer.release()
+        stopUpdatingTime()
         super.onCleared()
     }
+
     fun setCurrentTrack(track: Track) {
         audioplayer.setCurrentTrack(track)
+    }
+
+    fun getDuration(): Long {
+
+        return audioplayer.getDuration().toLong()
     }
 
     private fun getCurrentPlayStatus(): PlayStatus {
@@ -71,11 +108,13 @@ class AudioPlayerViewModel(
 
 
 
-    fun formatTime(progress: Long): String {
-        val seconds = progress.toInt()
+    fun formatTime(progress: Float): String {
+        val seconds = ceil(progress).toInt()
         val minutes = seconds / 60
-        return String.format("%02d:%02d", minutes, seconds)
+        val remainingSeconds = seconds % 60
+        return String.format("%02d:%02d", minutes, remainingSeconds)
     }
+
 
     fun formatDuration(durationMillis: Long): String {
         val formatter = SimpleDateFormat("mm:ss", Locale.getDefault())
@@ -96,9 +135,12 @@ class AudioPlayerViewModel(
                 "—"
             }
         } catch (e: Exception) {
-
             "—"
         }
+    }
+
+    companion object {
+        private const val TIMER_DELAY = 300L
     }
 }
 

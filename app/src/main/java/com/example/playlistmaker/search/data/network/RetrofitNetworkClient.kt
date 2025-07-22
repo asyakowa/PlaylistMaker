@@ -7,43 +7,34 @@ import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.Response
 import com.example.playlistmaker.search.data.dto.TrackApiService
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
-import java.io.IOException
 import android.net.ConnectivityManager
 import com.example.playlistmaker.search.data.dto.ResponseStatus
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class RetrofitNetworkClient(private val context: Context,
                             private val trackService :TrackApiService
 ) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
+        if (!isConnected()) {
+            return Response().apply { status = ResponseStatus.NO_INTERNET }
+        }
+
+        if (dto !is TrackSearchRequest) {
+            return Response().apply { status = ResponseStatus.BAD_REQUEST }
+        }
+
         return try {
-            if (isConnected() == false) Response().apply { status = ResponseStatus.NO_INTERNET }
-            if (dto is TrackSearchRequest) {
-                val resp =  trackService.search(dto.expression).execute()
-                val body = resp.body() ?: Response().apply {
-                    status = ResponseStatus.SERVER_ERROR
-                }
-                body.apply {
-                    status = when (resp.code()) {
-                        200 -> ResponseStatus.SUCCESS
-                        400 -> ResponseStatus.BAD_REQUEST
-                        500 -> ResponseStatus.SERVER_ERROR
-                        else -> ResponseStatus.UNKNOWN_ERROR
-                    }
-                }
-            } else {
-                Response().apply { status = ResponseStatus.BAD_REQUEST }
+            withContext(Dispatchers.IO) {
+                val response = trackService.search(dto.expression)
+                response.apply { status = ResponseStatus.SUCCESS }
             }
-        } catch (e: IOException) {
-            Response().apply {
-                status = ResponseStatus.NO_INTERNET
-            }
-        } catch (e: Exception) {
-            Response().apply {
-                status = ResponseStatus.UNKNOWN_ERROR
-            }
+        } catch (e: Throwable) {
+            Response().apply { status = ResponseStatus.SERVER_ERROR }
         }
     }
+
     companion object {
         const val KEYTRACK = "track"
         const val ERRORSERVERCODE = 500
@@ -63,3 +54,4 @@ class RetrofitNetworkClient(private val context: Context,
         return false
     }
 }
+
