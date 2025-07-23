@@ -24,6 +24,7 @@ class AudioPlayerFragment : Fragment() {
     companion object {
         const val KEY_CHOSEN_TRACK = "chosen_track"
     }
+    private var lastTrackId: Int? = null
 
     private var _binding: FragmentAudiopleerBinding? = null
     private val binding get() = _binding!!
@@ -54,8 +55,6 @@ class AudioPlayerFragment : Fragment() {
             val track = Gson().fromJson(json, Track::class.java)
             viewModel.setCurrentTrack(track)
             viewModel.prepareTrack()
-            val formattedDuration = viewModel.formatTime(track.trackTimeMillis.toFloat() / 1000L)
-            binding.durationSongValue.text = formattedDuration
         }
     }
 
@@ -83,36 +82,42 @@ class AudioPlayerFragment : Fragment() {
         this.isPlaying = isPlaying
     }
 
-    private fun updateUI(track: Track) {
-        Glide.with(this)
-            .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
-            .placeholder(R.drawable.placeholder)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .centerInside()
-            .transform(RoundedCorners(2))
-            .into(binding.albumImage)
+    private fun updateUI(screenState: TrackScreenState.Content) {
+        val track = screenState.trackModel
 
-        binding.songName.text = track.trackName
-        binding.artistName.text = track.artistName
-        binding.nameAlbumValue.text = track.collectionName
-        binding.songYearValue.text = viewModel.formatYear(track.releaseDate)
-        binding.songGenreValue.text = track.primaryGenreName
-        binding.songCountryValue.text = track.country
+         if (lastTrackId != track.trackId) {
+            lastTrackId = track.trackId
+
+            Glide.with(this)
+                .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
+                .placeholder(R.drawable.placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .centerCrop()
+                .transform(RoundedCorners(2))
+                .into(binding.albumImage)
+
+            binding.songName.text = track.trackName
+            binding.artistName.text = track.artistName
+            binding.nameAlbumValue.text = track.collectionName
+            binding.songYearValue.text = screenState.formattedYear
+            binding.songGenreValue.text = track.primaryGenreName
+            binding.songCountryValue.text = track.country
+             binding.durationSongValue.text = screenState.duration
+
+         }
+
+         binding.currentSongTime.text = screenState.progress
+        updatePlayButton(screenState.isPlaying)
     }
+
+
 
     private fun setupObservers() {
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
-            if (screenState is TrackScreenState.Content) {
-                updateUI(screenState.trackModel)
+            when (screenState) {
+                is TrackScreenState.Content -> updateUI(screenState)
+                is TrackScreenState.Loading -> {  }
             }
-        }
-
-        viewModel.getPlayStatusLiveData().observe(viewLifecycleOwner) { playStatus ->
-            if (playStatus.isPlaying != isPlaying) {
-                updatePlayButton(playStatus.isPlaying)
-            }
-            binding.currentSongTime.text = playStatus.progress
         }
     }
 
@@ -121,5 +126,3 @@ class AudioPlayerFragment : Fragment() {
         _binding = null
     }
 }
-
-
