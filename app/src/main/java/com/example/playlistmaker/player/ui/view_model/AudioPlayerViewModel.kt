@@ -147,6 +147,9 @@ class AudioPlayerViewModel(
             DEFAULT_YEAR
         }
     }
+    fun togglePlayback() {
+        if (isPlaying) pause() else play()
+    }
 
     companion object {
         private const val TIMER_DELAY = 300L

@@ -18,20 +18,17 @@ import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 class AudioPlayerFragment : Fragment() {
 
     companion object {
         const val KEY_CHOSEN_TRACK = "chosen_track"
     }
-    private var lastTrackId: Int? = null
 
     private var _binding: FragmentAudiopleerBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<AudioPlayerViewModel>()
 
-    private var isPlaying = false
     private lateinit var playIcon: Drawable
     private lateinit var pauseIcon: Drawable
 
@@ -65,11 +62,7 @@ class AudioPlayerFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.playSongBtn.setOnClickListener {
-            if (isPlaying) {
-                viewModel.pause()
-            } else {
-                viewModel.play()
-            }
+            viewModel.togglePlayback()
         }
 
         binding.toolbar.setOnClickListener {
@@ -79,44 +72,36 @@ class AudioPlayerFragment : Fragment() {
 
     private fun updatePlayButton(isPlaying: Boolean) {
         binding.playSongBtn.setImageDrawable(if (isPlaying) pauseIcon else playIcon)
-        this.isPlaying = isPlaying
     }
 
     private fun updateUI(screenState: TrackScreenState.Content) {
         val track = screenState.trackModel
 
-         if (lastTrackId != track.trackId) {
-            lastTrackId = track.trackId
+        Glide.with(this)
+            .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
+            .placeholder(R.drawable.placeholder)
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .centerCrop()
+            .transform(RoundedCorners(2))
+            .into(binding.albumImage)
 
-            Glide.with(this)
-                .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
-                .placeholder(R.drawable.placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .centerCrop()
-                .transform(RoundedCorners(2))
-                .into(binding.albumImage)
+        binding.songName.text = track.trackName
+        binding.artistName.text = track.artistName
+        binding.nameAlbumValue.text = track.collectionName
+        binding.songYearValue.text = screenState.formattedYear
+        binding.songGenreValue.text = track.primaryGenreName
+        binding.songCountryValue.text = track.country
+        binding.durationSongValue.text = screenState.duration
+        binding.currentSongTime.text = screenState.progress
 
-            binding.songName.text = track.trackName
-            binding.artistName.text = track.artistName
-            binding.nameAlbumValue.text = track.collectionName
-            binding.songYearValue.text = screenState.formattedYear
-            binding.songGenreValue.text = track.primaryGenreName
-            binding.songCountryValue.text = track.country
-             binding.durationSongValue.text = screenState.duration
-
-         }
-
-         binding.currentSongTime.text = screenState.progress
         updatePlayButton(screenState.isPlaying)
     }
-
-
 
     private fun setupObservers() {
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> updateUI(screenState)
-                is TrackScreenState.Loading -> {  }
+                is TrackScreenState.Loading -> {   }
             }
         }
     }
@@ -126,3 +111,5 @@ class AudioPlayerFragment : Fragment() {
         _binding = null
     }
 }
+
+
