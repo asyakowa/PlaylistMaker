@@ -3,14 +3,17 @@ package com.example.playlistmaker.player.domain
 import com.example.playlistmaker.search.domain.models.Track
 
 interface Audioplayer {
-fun prepare(callback: (Track) -> Unit)
-
+    fun prepare(callback: (Track) -> Unit)
     fun play(statusObserver: StatusObserver)
     fun pause()
     fun seek(position: Float)
     fun setCurrentTrack(track: Track)
-
     fun release()
+    fun getDuration(): Int
+
+    fun isPlaying(): Boolean
+
+    fun getCurrentPositionSec(): Float
 
     interface StatusObserver {
         fun onProgress(progress: Float)

@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -39,6 +39,11 @@ buildFeatures {
     viewBinding  = true
 }}
 dependencies {
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.core.ktx)

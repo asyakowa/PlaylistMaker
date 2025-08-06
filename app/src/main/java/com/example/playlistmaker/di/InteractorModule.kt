@@ -1,6 +1,8 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.player.domain.Audioplayer
+import com.example.playlistmaker.media.db.FavTracksInteractor
+ import com.example.playlistmaker.media.domain.impl.FavTracksInteractorImpl
+ import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.domain.AudioplayerInteractor
 import com.example.playlistmaker.player.domain.impl.AudioplayerImpl
 import com.example.playlistmaker.player.domain.impl.AudioplayerInteractorImpl
@@ -12,6 +14,7 @@ import com.example.playlistmaker.settings.domain.impl.SettingsInteractorImpl
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 import com.example.playlistmaker.sharing.domain.impl.SharingInteractorImpl
 import com.example.playlistmakersearch.domain.api.TracksInteractor
+import org.koin.core.scope.get
 import org.koin.dsl.module
 
 val interactorModule = module {
@@ -19,7 +22,9 @@ val interactorModule = module {
     single <AudioplayerInteractor>{
         AudioplayerInteractorImpl(get())
     }
-
+    single<FavTracksInteractor > {
+        FavTracksInteractorImpl(get())
+    }
     single<Audioplayer> {
         AudioplayerImpl(get())
     }

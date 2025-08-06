@@ -14,8 +14,11 @@
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
+        android:layout_marginStart="@dimen/dpfour"
         tools:listitem="@layout/track_layout"
-        tools:itemCount="15"/>
+
+
+        tools:itemCount="9"/>
 
     <LinearLayout
         android:id="@+id/noFavs"
