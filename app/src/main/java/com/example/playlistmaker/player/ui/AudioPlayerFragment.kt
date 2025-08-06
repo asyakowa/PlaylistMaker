@@ -18,6 +18,7 @@ import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 class AudioPlayerFragment : Fragment() {
 
     companion object {
@@ -39,35 +40,9 @@ class AudioPlayerFragment : Fragment() {
         _binding = FragmentAudiopleerBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setupIcons()
-        setupClickListeners()
-        setupObservers()
-
-        val json = arguments?.getString(KEY_CHOSEN_TRACK)
-        if (json != null) {
-            val track = Gson().fromJson(json, Track::class.java)
-            viewModel.setCurrentTrack(track)
-            viewModel.prepareTrack()
-        }
-    }
-
     private fun setupIcons() {
         playIcon = ContextCompat.getDrawable(requireContext(), R.drawable.playtrack)!!
         pauseIcon = ContextCompat.getDrawable(requireContext(), R.drawable.pausetrack)!!
-    }
-
-    private fun setupClickListeners() {
-        binding.playSongBtn.setOnClickListener {
-            viewModel.togglePlayback()
-        }
-
-        binding.toolbar.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 
     private fun updatePlayButton(isPlaying: Boolean) {
@@ -97,13 +72,53 @@ class AudioPlayerFragment : Fragment() {
         updatePlayButton(screenState.isPlaying)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupIcons()
+        setupClickListeners()
+        setupObservers()
+
+        val json = arguments?.getString(KEY_CHOSEN_TRACK)
+        if (json != null) {
+            val track = Gson().fromJson(json, Track::class.java)
+            viewModel.setCurrentTrack(track)
+            viewModel.prepareTrack()
+        }
+    }
+
+    private fun setupClickListeners() {
+        binding.playSongBtn.setOnClickListener {
+            viewModel.togglePlayback()
+        }
+
+        binding.toolbar.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.likeBtn.setOnClickListener {
+            viewModel.toggleFavorite()
+        }
+    }
+
     private fun setupObservers() {
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> updateUI(screenState)
-                is TrackScreenState.Loading -> {   }
+                is TrackScreenState.Loading -> {  }
             }
         }
+
+        viewModel.getIsFavoriteLiveData().observe(viewLifecycleOwner) { isFavorite ->
+            updateLikeButton(isFavorite)
+        }
+    }
+
+    private fun updateLikeButton(isFavorite: Boolean) {
+        binding.likeBtn.setImageResource(
+            if (isFavorite) R.drawable.favbuttonheart
+            else R.drawable.favbutton
+        )
     }
 
     override fun onDestroyView() {

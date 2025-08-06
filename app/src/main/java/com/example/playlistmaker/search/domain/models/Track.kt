@@ -12,7 +12,10 @@ data class Track(
 	val releaseDate: String,
 	val primaryGenreName: String,
 	val country: String,
+	var isFav: Boolean = false,
+	val addedAt: Long? = null,
 	val previewUrl:String
+
 )
 {
 	fun toJson(): String {

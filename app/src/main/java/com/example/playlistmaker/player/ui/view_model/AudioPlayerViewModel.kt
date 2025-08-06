@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.media.db.FavTracksInteractor
 import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.ui.model.TrackScreenState
 import com.example.playlistmaker.search.domain.models.Track
@@ -16,11 +17,15 @@ import java.util.TimeZone
 import kotlin.math.ceil
 
 class AudioPlayerViewModel(
-    private val audioplayer: Audioplayer
+    private val audioplayer: Audioplayer,
+    private val favTracksInteractor: FavTracksInteractor
 ) : ViewModel() {
 
     private val screenStateLiveData = MutableLiveData<TrackScreenState>(TrackScreenState.Loading)
     fun getScreenStateLiveData(): LiveData<TrackScreenState> = screenStateLiveData
+
+    private val isFavoriteLiveData = MutableLiveData<Boolean>(false)
+    fun getIsFavoriteLiveData(): LiveData<Boolean> = isFavoriteLiveData
 
     private var currentTrack: Track? = null
     private var isPlaying = false
@@ -28,11 +33,13 @@ class AudioPlayerViewModel(
     private var formattedYear = DEFAULT_YEAR
     private var timerJob: Job? = null
 
+
     fun prepareTrack() {
         resetPlayerState()
         audioplayer.prepare { track ->
             currentTrack = track
             formattedYear = formatYear(track.releaseDate)
+            updateIsFavorite(track.trackId)
             emitContentState()
         }
     }
@@ -41,27 +48,48 @@ class AudioPlayerViewModel(
         currentTrack = track
         formattedYear = formatYear(track.releaseDate)
         audioplayer.setCurrentTrack(track)
+        updateIsFavorite(track.trackId)
         emitContentState()
     }
 
+    private fun updateIsFavorite(trackId: Int) {
+        viewModelScope.launch {
+            favTracksInteractor.getFavTracks()
+                .collect { tracks ->
+                    val fav = tracks.any { it.trackId == trackId }
+                    isFavoriteLiveData.postValue(fav)
+                }
+        }
+    }
+
+    fun toggleFavorite() {
+        val track = currentTrack ?: return
+        viewModelScope.launch {
+            val isFav = isFavoriteLiveData.value ?: false
+            if (isFav) {
+                favTracksInteractor.deleteFromFav(track.trackId)
+            } else {
+                val trackWithTimestamp = track.copy(addedAt = System.currentTimeMillis())
+                favTracksInteractor.addToFavorite(trackWithTimestamp)
+            }
+        }
+    }
+
+
+
     fun play() {
         audioplayer.play(object : Audioplayer.StatusObserver {
-            override fun onProgress(progressValue: Float) {
-
-            }
-
+            override fun onProgress(progressValue: Float) {}
             override fun onPause() {
                 isPlaying = false
                 stopUpdatingTime()
                 emitContentState()
             }
-
             override fun onPlay() {
                 isPlaying = true
                 startUpdatingTime()
                 emitContentState()
             }
-
             override fun onCompletion() {
                 audioplayer.seek(0f)
                 isPlaying = false
@@ -106,9 +134,7 @@ class AudioPlayerViewModel(
                 formattedYear = formattedYear,
                 duration = duration
             )
-
         )
-
     }
 
     private fun resetPlayerState() {
@@ -147,6 +173,7 @@ class AudioPlayerViewModel(
             DEFAULT_YEAR
         }
     }
+
     fun togglePlayback() {
         if (isPlaying) pause() else play()
     }
