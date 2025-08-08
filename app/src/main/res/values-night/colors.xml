@@ -45,5 +45,6 @@
     <color name="defaultColor">#FFFFFFFF</color>
     <color name="lineColor">#1A1B22</color>
     <color name="outlinelike">#40FFFFFF</color>
+    <color name="outlinelike1">#FFFFFFFF</color>
 
 </resources>
