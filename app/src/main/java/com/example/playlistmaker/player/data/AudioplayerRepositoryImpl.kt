@@ -39,7 +39,9 @@ class AudioplayerRepositoryImpl(
         try {
             mediaPlayer.reset()
             mediaPlayer.setDataSource(url)
-            mediaPlayer.setOnPreparedListener { onPrepared() }
+            mediaPlayer.setOnPreparedListener {
+
+                onPrepared() }
             mediaPlayer.setOnCompletionListener {
                 stopProgressTracking()
                 onCompletion()
@@ -84,4 +86,9 @@ class AudioplayerRepositoryImpl(
         handler.removeCallbacks(progressRunnable)
         progressCallback = null
     }
+
+    override fun getDuration(): Int {
+        return mediaPlayer?.duration?.div(1000) ?: 0
+    }
+
 }

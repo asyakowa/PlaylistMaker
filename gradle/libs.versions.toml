@@ -24,6 +24,7 @@ navigationeventAndroid = "1.0.0-alpha01"
 recyclerview = "1.4.0"
 googleMaterial = "1.12.0"
 navigation = "2.9.0"
+room = "2.6.1"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -56,3 +57,5 @@ androidx-navigation = { group = "androidx.navigation", name = "navigation-fragme
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt" }
+

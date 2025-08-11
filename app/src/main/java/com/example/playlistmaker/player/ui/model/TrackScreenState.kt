@@ -1,10 +1,14 @@
 package com.example.playlistmaker.player.ui.model
 
-import com.example.playlistmaker.search.domain.models.Track
-
+ import com.example.playlistmaker.search.domain.models.Track
 sealed class TrackScreenState {
-    object Loading: TrackScreenState()
+    object Loading : TrackScreenState()
     data class Content(
-        val trackModel: Track
-    ): TrackScreenState()
+        val trackModel: Track,
+        val isPlaying: Boolean,
+        val progress: String,
+        val formattedYear: String,
+        val duration: String
+
+    ) : TrackScreenState()
 }

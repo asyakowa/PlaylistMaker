@@ -1,0 +1,70 @@
+[33m63d84b7[m[33m ([m[1;36mHEAD -> [m[1;32mnewbranch[m[33m, [m[1;31morigin/newbranch[m[33m)[m 21 cпринт
+[33ma0de613[m исправления
+[33mb391726[m 20
+[33m1eff5fd[m 20
+[33mf8192ed[m 20
+[33m4f88f6c[m остальная часть
+[33m026fc9d[m 19 спринт
+[33m31ee5fe[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mdev[m[33m)[m продолжение дз
+[33m0625e44[m  18 спринт
+[33md17ba1e[m  исправления
+[33m9105a20[m исправления:wq:wq
+[33mc3cd860[m 17 cпринт
+[33m95b2c95[m 18 спринт (#14)
+[33m643c4c6[m  исправления
+[33mb0cd673[m еще исправления
+[33mfced23a[m исправления
+[33m7ec1c91[m 17 cпринт
+[33mf2f5c78[m Удалён лишний файл после мерджа
+[33m4e466c0[m Merge branch 'dev'
+[33mf5f79f2[m Удаление мусорных файлов
+[33mda3d2ca[m 17 cпринт
+[33mb4f6719[m Merge pull request #12 from asyakowa/dev
+[33mf2568df[m Merge pull request #11 from asyakowa/newbranch
+[33m55fcb73[m Resolve font file merge conflicts
+[33m9c2d075[m восстановление данных после отката
+[33mb77240d[m исправление
+[33maac91fd[m исправление
+[33m54f582e[m продолжение
+[33m0847395[m продолжение
+[33m94dd584[m 16 спринт
+[33m9cb0577[m исправление
+[33m0a81430[m исправление
+[33m37ffba7[m продолжение
+[33m3da0a43[m продолжение
+[33me29ac4f[m 16 спринт
+[33m70d45ad[m Merge pull request #9 from asyakowa/master
+[33m62227d2[m 15 спринт
+[33m63a195c[m поправила кол-во символов в названии альбома
+[33m4d77d82[m Merge pull request #8 from asyakowa/master
+[33m1ff95df[m работа по 14 спринту
+[33maee3a4c[m работа по 14 спринту
+[33m99129dc[m Merge pull request #7 from asyakowa/master
+[33mc995564[m работа по 13 спринту
+[33m0594105[m 13 спринт
+[33m90b5e91[m Merge pull request #6 from asyakowa/master
+[33m2143dff[m исправления
+[33m957ba3a[m 12 спринт
+[33m6efe6bb[m Merge pull request #5 from asyakowa/master
+[33mbf9d9d8[m 11 спринт. окончательные изменения в этом коммите в прошлом коммите были предварительные изменения по проекту, проверьте, пожалуйста, оба
+[33m46600ce[m 11 спринт
+[33ma770fe2[m Merge pull request #4 from asyakowa/master
+[33m6dfa992[m Merge remote-tracking branch 'origin/master'
+[33mab48569[m 10 спринт
+[33m977bf88[m Merge pull request #3 from asyakowa/master
+[33mf4cdad2[m Update activity_main.xml
+[33m765461b[m Update activity_search.xml
+[33m0495de6[m Merge branch 'dev' into master
+[33m8576207[m Merge remote-tracking branch 'origin/master'
+[33mb0133b3[m исправление
+[33ma9a1b22[m 9 спринт
+[33m1c46526[m Merge remote-tracking branch 'origin/master'
+[33m8f9853c[m 9 спринт
+[33m9a7a8b6[m Merge remote-tracking branch 'origin/master'
+[33m7e40ba1[m Merge pull request #2 from asyakowa/master
+[33ma512dfd[m 9 спринт все дз
+[33mf7f6c82[m 9 спринт
+[33m3a2a6db[m Merge pull request #1 from asyakowa/master
+[33me40a660[m init commit
+[33m90c5509[m init commit
+[33m975c9dc[m init commit

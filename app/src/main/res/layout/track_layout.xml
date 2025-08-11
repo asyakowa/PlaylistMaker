@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/size_61dp"
-    android:layout_marginTop="@dimen/size_2dp"
+
     android:orientation="horizontal"
     android:id="@+id/viewForTracks">
 
