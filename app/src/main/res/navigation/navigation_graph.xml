@@ -20,9 +20,9 @@
         android:name="com.example.playlistmaker.media.MediaFragment"
         android:label="MediaFragment">
 
-    <action
-        android:id="@+id/action_audioPlayerFragment"
-        app:destination="@id/audioPlayerFragment" />
+        <action
+            android:id="@+id/action_media_to_newPlaylist"
+            app:destination="@id/newPlaylistFragment" />
 
 
     </fragment>
@@ -39,16 +39,41 @@
         android:id="@+id/audioPlayerFragment"
         tools:layout="@layout/fragment_audiopleer"
         android:name="com.example.playlistmaker.player.ui.AudioPlayerFragment"
-        android:label="AudioPlayerFragment" />
+        android:label="AudioPlayerFragment" >
+
+        <action
+            android:id="@+id/action_audioPlayerFragment_to_newPlaylistFragment"
+            app:destination="@id/newPlaylistFragment"  >
+
+            <argument
+                android:name="trackJson"
+                app:argType="string" />
+
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/favouriteFragment"
         tools:layout="@layout/fragment_favorites"
         android:name="com.example.playlistmaker.media.ui.view_model.fragments.FavoritesFragment"
         android:label="FavoritesFragment" >
+        <action
+            android:id="@+id/audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment"  />
     </fragment>
     <fragment
         android:id="@+id/playlistFragment"
         tools:layout="@layout/fragment_playlist"
         android:name="com.example.playlistmaker.media.ui.view_model.fragments.PlaylistFragment"
-        android:label="PlaylistFragment" />
+        android:label="PlaylistFragment" >
+
+        <action
+            android:id="@+id/action_playlistFragment_to_newPlaylistFragment"
+            app:destination="@id/newPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPlaylistFragment"
+        android:name="com.example.playlistmaker.create_new_playlist.NewPlaylistFragment"
+        android:label="NewPlaylistFragment" >
+
+    </fragment>
 </navigation>

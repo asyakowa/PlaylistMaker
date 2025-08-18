@@ -5,10 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.findNavController
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaBinding
 import com.example.playlistmaker.media.ui.view_model.MediaViewModel
-import com.example.playlistmaker.media.ui.view_model.ViewPagerAdapter
+import com.example.playlistmaker.media.ui.view_model.fragments.FavoritesFragment
+import com.example.playlistmaker.playlist.data.OnPlaylistAction
+import com.example.playlistmaker.playlist.ui.fragment.PlaylistFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,7 +46,17 @@ class MediaFragment : Fragment() {
             getString(R.string.playlists)
         )
 
-        binding.viewPager.adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
+        binding.viewPager.adapter = MediaViewPagerAdapter(
+            childFragmentManager,
+            lifecycle,
+            object : OnPlaylistAction {
+                override fun onCreateNewPlaylist() {
+                    val navController = requireActivity()
+                        .findNavController(R.id.FragmentContainer)
+                    navController.navigate(R.id.action_playlistFragment_to_newPlaylistFragment)
+                }
+            }
+        )
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabTitles[position]
@@ -54,4 +70,23 @@ class MediaFragment : Fragment() {
         _binding = null
     }
 }
+class MediaViewPagerAdapter(
+    fragmentManager: FragmentManager,
+    lifecycle: Lifecycle,
+    private val playlistListener: OnPlaylistAction
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
+    override fun getItemCount(): Int = 2
+
+    override fun createFragment(position: Int): Fragment {
+        return when (position) {
+            0 -> FavoritesFragment()
+            1 -> {
+                val fragment = PlaylistFragment()
+                fragment.listener = playlistListener
+                fragment
+            }
+            else -> throw IllegalStateException()
+        }
+    }
+}

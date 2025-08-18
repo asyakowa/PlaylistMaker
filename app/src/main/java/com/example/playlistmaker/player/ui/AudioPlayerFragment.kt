@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -15,11 +18,14 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentAudiopleerBinding
 import com.example.playlistmaker.player.ui.model.TrackScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
+import com.example.playlistmaker.playlist.ui.BottomPlaylistAdapter
 import com.example.playlistmaker.search.domain.models.Track
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AudioPlayerFragment : Fragment() {
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     companion object {
         const val KEY_CHOSEN_TRACK = "chosen_track"
@@ -32,6 +38,7 @@ class AudioPlayerFragment : Fragment() {
 
     private lateinit var playIcon: Drawable
     private lateinit var pauseIcon: Drawable
+    private lateinit var playlistsAdapter: BottomPlaylistAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +47,22 @@ class AudioPlayerFragment : Fragment() {
         _binding = FragmentAudiopleerBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupIcons()
+        setupClickListeners()
+        setupObservers()
+
+        val json = arguments?.getString(KEY_CHOSEN_TRACK)
+        if (json != null) {
+            val track = Gson().fromJson(json, Track::class.java)
+            viewModel.setCurrentTrack(track)
+            viewModel.prepareTrack()
+        }
+    }
+
     private fun setupIcons() {
         playIcon = ContextCompat.getDrawable(requireContext(), R.drawable.playtrack)!!
         pauseIcon = ContextCompat.getDrawable(requireContext(), R.drawable.pausetrack)!!
@@ -72,21 +95,6 @@ class AudioPlayerFragment : Fragment() {
         updatePlayButton(screenState.isPlaying)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setupIcons()
-        setupClickListeners()
-        setupObservers()
-
-        val json = arguments?.getString(KEY_CHOSEN_TRACK)
-        if (json != null) {
-            val track = Gson().fromJson(json, Track::class.java)
-            viewModel.setCurrentTrack(track)
-            viewModel.prepareTrack()
-        }
-    }
-
     private fun setupClickListeners() {
         binding.playSongBtn.setOnClickListener {
             viewModel.togglePlayback()
@@ -99,26 +107,83 @@ class AudioPlayerFragment : Fragment() {
         binding.likeBtn.setOnClickListener {
             viewModel.toggleFavorite()
         }
+
+        binding.savebuttony.setOnClickListener {
+            val track = viewModel.getCurrentTrack() ?: return@setOnClickListener
+            setupPlaylistsBottomSheet(track)
+            showPlaylistsBottomSheet()
+        }
+
+        binding.overlay.setOnClickListener {
+            hidePlaylistsBottomSheet()
+        }
     }
 
     private fun setupObservers() {
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
                 is TrackScreenState.Content -> updateUI(screenState)
-                is TrackScreenState.Loading -> {  }
+                is TrackScreenState.Loading -> { }
             }
         }
 
         viewModel.getIsFavoriteLiveData().observe(viewLifecycleOwner) { isFavorite ->
-            updateLikeButton(isFavorite)
+            binding.likeBtn.setImageResource(
+                if (isFavorite) R.drawable.favbuttonheart else R.drawable.favbutton
+            )
         }
     }
 
-    private fun updateLikeButton(isFavorite: Boolean) {
-        binding.likeBtn.setImageResource(
-            if (isFavorite) R.drawable.favbuttonheart
-            else R.drawable.favbutton
-        )
+    private fun setupPlaylistsBottomSheet(track: Track) {
+        playlistsAdapter = BottomPlaylistAdapter(showCountGray = true)
+        binding.playlistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.playlistsRecyclerView.adapter = playlistsAdapter
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet)
+
+        binding.playlistsBottomSheet.background =
+            ContextCompat.getDrawable(requireContext(), R.drawable.bottom_sheet_bg)
+
+        viewModel.getAllPlaylists().observe(viewLifecycleOwner) { playlists ->
+            playlistsAdapter.playlists = playlists.toMutableList()
+            playlistsAdapter.notifyDataSetChanged()
+        }
+
+        playlistsAdapter.onItemClick = { playlist ->
+            if (!playlist.trackIds.contains(track.trackId.toString())) {
+                playlist.trackIds = playlist.trackIds.toMutableList().apply { add(track.trackId.toString()) }
+                viewModel.updatePlaylist(playlist)
+                hidePlaylistsBottomSheet()
+                showToast(getString(R.string.track_in_playlist) + " ${playlist.name}")
+            } else {
+                showToast(getString(R.string.track_already_in_playlist) + " ${playlist.name}")
+            }
+        }
+
+        viewModel.loadAllPlaylists()
+
+        binding.createPlaylistButton.setOnClickListener {
+            hidePlaylistsBottomSheet()
+            findNavController().navigate(R.id.action_audioPlayerFragment_to_newPlaylistFragment)
+        }
+
+        binding.overlay.setOnClickListener {
+            hidePlaylistsBottomSheet()
+        }
+    }
+
+    private fun showPlaylistsBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        binding.overlay.visibility = View.VISIBLE
+    }
+
+    private fun hidePlaylistsBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        binding.overlay.visibility = View.GONE
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
@@ -126,5 +191,3 @@ class AudioPlayerFragment : Fragment() {
         _binding = null
     }
 }
-
-

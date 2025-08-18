@@ -46,5 +46,18 @@
     <color name="lineColor">#1A1B22</color>
     <color name="outlinelike">#40FFFFFF</color>
     <color name="outlinelike1">#FFFFFFFF</color>
+    <color name="text_color_newplaylistmain">#FFFFFF</color>
+    <color name="btncreateplaylistcolor">#FFFFFF</color>
+    <color name="btintbottomsheet">#1A1B22</color>
+    <color name="textcreateplaylistcolor">#1A1B22</color>
+    <color name="btintbottomsheet2">#1A1B22</color>
+    <color name="nametracklistrv">#FFFFFF</color>
+    <color name="addtoplaylist">#FFFFFF</color>
+    <color name="boxcolor">#FFFFFF</color>
+    <color name="bscolor">#FFFFFF</color>
+    <color name="counttracks">#AEAFB4</color>
+    <color name="counttrackslists">#FFFFFF</color>
+
+
 
 </resources>
