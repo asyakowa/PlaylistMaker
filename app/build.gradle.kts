@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+    id("kotlin-parcelize")
+     alias(libs.plugins.navigation.safe.args)
+
 }
 
 android {
@@ -39,7 +42,10 @@ buildFeatures {
     viewBinding  = true
 }}
 dependencies {
+
+    implementation(libs.engage.core)
     val room_version = "2.6.1"
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.1")
 
     implementation("androidx.room:room-runtime:$room_version")
     kapt("androidx.room:room-compiler:$room_version")

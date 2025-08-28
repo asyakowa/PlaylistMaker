@@ -6,6 +6,8 @@ import com.example.playlistmaker.media.db.FavTracksInteractor
 import com.example.playlistmaker.player.domain.AudioplayerInteractor
 import com.example.playlistmaker.player.domain.impl.AudioplayerImpl
 import com.example.playlistmaker.player.domain.impl.AudioplayerInteractorImpl
+import com.example.playlistmaker.playlist.domain.PlaylistInteractor
+import com.example.playlistmaker.playlist.domain.impl.PlaylistInteractorImpl
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.impl.SearchHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.impl.TracksInteractorImpl
@@ -41,5 +43,8 @@ val interactorModule = module {
     }
     single <SharingInteractor>{
         SharingInteractorImpl(get(), get())
+    }
+    factory<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
     }
 }

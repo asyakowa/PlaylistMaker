@@ -40,7 +40,7 @@ class FavoritesFragment : Fragment() {
             val bundle = Bundle().apply {
                 putString(AudioPlayerFragment.KEY_CHOSEN_TRACK, json)
             }
-            findNavController().navigate(R.id.action_audioPlayerFragment, bundle)
+            findNavController().navigate(R.id.audioPlayerFragment, bundle)
         }
         binding.mediaTracklist.adapter = adapter
 

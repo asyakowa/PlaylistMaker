@@ -7,6 +7,8 @@ import com.example.playlistmaker.media.data.TrackDbConvertor
 import com.example.playlistmaker.media.domain.db.FavTracksRepository
 import com.example.playlistmaker.player.data.AudioplayerRepositoryImpl
 import com.example.playlistmaker.player.domain.AudioplayerRepository
+import com.example.playlistmaker.playlist.data.PlaylistRepositoryImpl
+import com.example.playlistmaker.playlist.domain.PlaylistRepository
 import com.example.playlistmaker.search.data.TracksRepositoryImpl
 import com.example.playlistmaker.search.domain.SearchHistoryRepository
 import com.example.playlistmaker.search.domain.api.TrackRepository
@@ -26,6 +28,7 @@ val repositoryModule = module {
     factory<AudioplayerRepository> {
         AudioplayerRepositoryImpl(get())
     }
+    single<PlaylistRepository> { PlaylistRepositoryImpl(get(), get()) }
 
     single <SettingsRepository> {
         SettingsRepositoryImpl(get())

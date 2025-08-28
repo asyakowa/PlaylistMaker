@@ -7,6 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.media.db.FavTracksInteractor
 import com.example.playlistmaker.player.domain.Audioplayer
 import com.example.playlistmaker.player.ui.model.TrackScreenState
+import com.example.playlistmaker.playlist.domain.AddTrackResult
+import com.example.playlistmaker.playlist.domain.PlaylistInteractor
+import com.example.playlistmaker.playlist.domain.models.Playlist
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,6 +20,7 @@ import java.util.TimeZone
 import kotlin.math.ceil
 
 class AudioPlayerViewModel(
+    private val playlistInteractor: PlaylistInteractor,
     private val audioplayer: Audioplayer,
     private val favTracksInteractor: FavTracksInteractor
 ) : ViewModel() {
@@ -27,12 +31,17 @@ class AudioPlayerViewModel(
     private val isFavoriteLiveData = MutableLiveData<Boolean>(false)
     fun getIsFavoriteLiveData(): LiveData<Boolean> = isFavoriteLiveData
 
+    private val playlistsLiveData = MutableLiveData<List<Playlist>>()
+    fun getAllPlaylists(): LiveData<List<Playlist>> = playlistsLiveData
+
+    private val addTrackResultLiveData = MutableLiveData<AddTrackResult>()
+    fun getAddTrackResultLiveData(): LiveData<AddTrackResult> = addTrackResultLiveData
+
     private var currentTrack: Track? = null
     private var isPlaying = false
     private var progress = DEFAULT_PROGRESS
     private var formattedYear = DEFAULT_YEAR
     private var timerJob: Job? = null
-
 
     fun prepareTrack() {
         resetPlayerState()
@@ -75,8 +84,6 @@ class AudioPlayerViewModel(
         }
     }
 
-
-
     fun play() {
         audioplayer.play(object : Audioplayer.StatusObserver {
             override fun onProgress(progressValue: Float) {}
@@ -105,6 +112,10 @@ class AudioPlayerViewModel(
         isPlaying = false
         stopUpdatingTime()
         emitContentState()
+    }
+
+    fun togglePlayback() {
+        if (isPlaying) pause() else play()
     }
 
     private fun startUpdatingTime() {
@@ -143,6 +154,21 @@ class AudioPlayerViewModel(
         formattedYear = DEFAULT_YEAR
     }
 
+    fun loadAllPlaylists() {
+        viewModelScope.launch {
+            val playlists = playlistInteractor.getAllPlaylists()
+            playlistsLiveData.postValue(playlists)
+        }
+    }
+
+    fun addTrackToPlaylist(playlist: Playlist) {
+        val track = currentTrack ?: return
+        viewModelScope.launch {
+            val result = playlistInteractor.addTrackToPlaylist(playlist, track)
+            addTrackResultLiveData.postValue(result)
+        }
+    }
+
     override fun onCleared() {
         audioplayer.release()
         stopUpdatingTime()
@@ -173,14 +199,18 @@ class AudioPlayerViewModel(
             DEFAULT_YEAR
         }
     }
+        fun getCurrentTrack(): Track? = currentTrack
 
-    fun togglePlayback() {
-        if (isPlaying) pause() else play()
+    fun updatePlaylist(playlist: Playlist) {
+        viewModelScope.launch {
+            playlistInteractor.updatePlaylist(playlist)
+        }
     }
 
-    companion object {
-        private const val TIMER_DELAY = 300L
-        private const val DEFAULT_PROGRESS = "00:00"
-        private const val DEFAULT_YEAR = "—"
-    }
+    companion
+               object {
+                   private const val TIMER_DELAY = 300L
+                   private const val DEFAULT_PROGRESS = "00:00"
+                   private const val DEFAULT_YEAR = "—"
+               }
 }

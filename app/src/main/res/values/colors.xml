@@ -47,4 +47,20 @@
     <color name="outlinelike">#401A1B22</color>
     <color name="outlinelike2">#401A1B22</color>
     <color name="outlinelike1">#1A1B22</color>
+
+    <color name="switch_thumb_active_color">#3772E7</color>
+    <color name="text_color_hint">#AEAFB4</color>
+    <color name="text_color_newplaylistmain">#1A1B22</color>
+    <color name="btncreateplaylistcolor">#1A1B22</color>
+    <color name="btintbottomsheet">#FFFFFF</color>
+    <color name="btintbottomsheet2">#FFFFFF</color>
+    <color name="textcreateplaylistcolor">#FFFFFF</color>
+    <color name="textcreateplaylistcolor2">#FFFFFF</color>
+    <color name="nametracklistrv">#1A1B22</color>
+    <color name="addtoplaylist">#1A1B22</color>
+    <color name="boxcolor">#AEAFB4</color>
+    <color name="bscolor">#E6E8EB</color>
+    <color name="counttracks">#AEAFB4</color>
+    <color name="counttrackslists">#1A1B22</color>
+
 </resources>
