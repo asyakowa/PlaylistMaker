@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/newPlaylistLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_56dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+
+    <ImageView
+        android:id="@+id/backButtonPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/backbtn"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/newPlaylistLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:textColor="@color/text_color_newplaylistmain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="start|center"
+        android:paddingStart="35dp"
+        android:text="Редактировать"
+        android:textFontWeight="500"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/backButtonPlayer"
+        app:layout_constraintStart_toEndOf="@+id/backButtonPlayer"
+        app:layout_constraintTop_toTopOf="@+id/backButtonPlayer"
+        tools:ignore="MissingConstraints" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/coverNewPlaylistLayout"
+        android:layout_width="312dp"
+        android:layout_height="312dp"
+        android:layout_marginTop="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPlaylistLayout" >
+
+        <ImageView
+            android:id="@+id/placeholderNewPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cover_new_playlist"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nameNewPlaylistLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="17dp"
+        android:hint="@string/name_new_playlist"
+        app:boxStrokeColor="@color/boxstroke1"
+
+        app:boxStrokeWidth="1dp"
+        app:hintTextColor="@color/text_color_newplaylistmain"
+        android:textColor="@color/text_color_newplaylistmain"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coverNewPlaylistLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameNewPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_display_regular"
+            android:inputType="text"
+            android:maxLines="1"
+
+            android:textColor="@color/text_color_newplaylistmain"
+            android:textFontWeight="400"
+            android:textSize="16sp"
+            app:hintTextColor="@color/text_color_newplaylistmain" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descriptionNewPlaylistLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/description"
+        app:boxStrokeColor="@color/boxstroke1"
+        app:boxStrokeWidth="1dp"
+        app:hintTextColor="@color/text_color_newplaylistmain"
+        android:textColor="@color/text_color_newplaylistmain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameNewPlaylistLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/descriptionNewPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_display_regular"
+            android:textSize="@dimen/size_16sp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/text_color_newplaylistmain"
+            android:textFontWeight="400"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createNewPlaylistButton"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="326dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#AEAFB4"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_16sp"
+        android:fontFamily="@font/ys_display_regular"
+        android:textAllCaps="false"
+        android:textFontWeight="500"
+        app:cornerRadius="8dp"
+        app:elevation="0dp"
+        android:stateListAnimator="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
