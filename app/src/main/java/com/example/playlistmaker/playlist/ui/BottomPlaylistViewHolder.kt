@@ -14,7 +14,7 @@ class BottomPlaylistViewHolder(
     private val showCountGray: Boolean = false
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun formatTrackCount(count: Int): String {
+    private fun formatTrackCount(count: Int): String {
         return when {
             count % 100 in 11..14 -> "$count треков"
             count % 10 == 1 -> "$count трек"
@@ -25,7 +25,6 @@ class BottomPlaylistViewHolder(
 
     fun bind(item: Playlist) {
         val coverFile = item.coverPath?.takeIf { it.isNotEmpty() }?.let { File(it) }
-
         if (coverFile != null && coverFile.exists()) {
             Glide.with(itemView)
                 .load(coverFile)
@@ -40,7 +39,9 @@ class BottomPlaylistViewHolder(
         }
 
         binding.playlistName.text = item.name
-        binding.playlistTracksCount.text = formatTrackCount(item.trackIds.size)
+
+        val trackCount = item.trackIds.filter { it.isNotBlank() }.size
+        binding.playlistTracksCount.text = formatTrackCount(trackCount)
 
         val colorRes = if (showCountGray) R.color.counttracks else R.color.counttrackslists
         binding.playlistTracksCount.setTextColor(

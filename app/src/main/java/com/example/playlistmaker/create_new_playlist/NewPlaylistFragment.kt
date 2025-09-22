@@ -25,154 +25,139 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
-    private var _binding: FragmentPlaylistnewBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel by viewModel<NewPlaylistViewModel>()
+        private var _binding: FragmentPlaylistnewBinding? = null
+        protected val binding get() = _binding!!
 
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) {
-            try {
-                binding.placeholderNewPlaylist.setImageURI(uri)
-                val picturesDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                viewModel.coverPath = viewModel.saveImageToPrivateStorage(
-                    uri,
-                    picturesDir!!,
-                    requireContext()
-                )
-                viewModel.hasUnsavedChanges = true
-            } catch (e: Exception) {
+        protected open val viewModel by viewModel<NewPlaylistViewModel>()
 
+        private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                try {
+                    binding.placeholderNewPlaylist.setImageURI(uri)
+                    val picturesDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                    viewModel.coverPath = viewModel.saveImageToPrivateStorage(uri, picturesDir!!, requireContext())
+                    viewModel.hasUnsavedChanges = true
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentPlaylistnewBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            _binding = FragmentPlaylistnewBinding.inflate(inflater, container, false)
+            return binding.root
+        }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
 
-        setupTextWatchers()
-        setupClickListeners()
-        setupBackPressHandler()
-        setupButtonStateObserver()
-    }
+            setupTextWatchers()
+            setupClickListeners()
+            setupBackPressHandler()
+            setupButtonStateObserver()
+        }
 
-    private fun setupTextWatchers() {
-        val textWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        private fun setupTextWatchers() {
+            val textWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    viewModel.hasUnsavedChanges = true
+                }
+                override fun afterTextChanged(s: Editable?) {}
+            }
+
+            binding.nameNewPlaylist.addTextChangedListener(textWatcher)
+            binding.descriptionNewPlaylist.addTextChangedListener(textWatcher)
+
+            binding.nameNewPlaylist.doAfterTextChanged { text ->
+                viewModel.playlistName = text?.toString() ?: ""
+            }
+        }
+
+        protected open fun setupClickListeners() {
+            binding.coverNewPlaylistLayout.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 viewModel.hasUnsavedChanges = true
             }
-            override fun afterTextChanged(s: Editable?) {}
-        }
 
-        binding.nameNewPlaylist.addTextChangedListener(textWatcher)
-        binding.descriptionNewPlaylist.addTextChangedListener(textWatcher)
-    }
+            binding.backButtonPlayer.setOnClickListener {
+                checkUnsavedChangesAndNavigate()
+            }
 
-    private fun setupClickListeners() {
-        binding.coverNewPlaylistLayout.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            viewModel.hasUnsavedChanges = true
-        }
+            binding.createNewPlaylistButton.setOnClickListener {
+                viewModel.playlistName = binding.nameNewPlaylist.text.toString()
+                viewModel.playlistDescription = binding.descriptionNewPlaylist.text.toString()
 
-        binding.backButtonPlayer.setOnClickListener {
-            checkUnsavedChangesAndNavigate()
-        }
-
-        binding.createNewPlaylistButton.setOnClickListener {
-            viewModel.playlistName = binding.nameNewPlaylist.text.toString()
-            viewModel.playlistDescription = binding.descriptionNewPlaylist.text.toString()
-
-            viewModel.savePlaylist(
-                viewModel.playlistName,
-                viewModel.playlistDescription,
-                onSuccess = { playlistId ->
-                    viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+                viewModel.savePlaylist(
+                    onSuccess = {
                         showToast(getString(R.string.playlist_created))
                         findNavController().navigateUp()
-                    }
-                },
-                onError = { errorKey ->
-                    requireActivity().runOnUiThread {
+                    },
+                    onError = { errorKey ->
                         when (errorKey) {
-                            "playlist_name_required" -> {
-                                binding.nameNewPlaylist.error = getString(R.string.playlist_name_required)
-                            }
-                            else -> {
-                                showToast(getString(R.string.playlist_save_error))
-                            }
+                            "playlist_name_required" -> binding.nameNewPlaylist.error =
+                                getString(R.string.playlist_name_required)
+                            else -> showToast(getString(R.string.playlist_save_error))
                         }
-                    }
-                }
-            )
-        }
-    }
-
-    private fun setupBackPressHandler() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            checkUnsavedChangesAndNavigate()
-        }
-    }
-
-    private fun setupButtonStateObserver() {
-        lifecycleScope.launch {
-            viewModel.isCreateButtonEnabled.collect { isEnabled ->
-                binding.createNewPlaylistButton.isEnabled = isEnabled
-                binding.createNewPlaylistButton.backgroundTintList = ColorStateList.valueOf(
-                    if (isEnabled) {
-                        ContextCompat.getColor(requireContext(), R.color.switch_thumb_active_color)
-                    } else {
-                        ContextCompat.getColor(requireContext(), R.color.text_color_hint)
                     }
                 )
             }
         }
 
-        binding.nameNewPlaylist.doAfterTextChanged { text ->
-            viewModel.playlistName = text?.toString() ?: ""
+        private fun setupBackPressHandler() {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+                checkUnsavedChangesAndNavigate()
+            }
         }
-    }
 
-    private fun checkUnsavedChangesAndNavigate() {
-        if (viewModel.hasUnsavedChanges) {
-            showExitDialog()
-        } else {
-            findNavController().navigateUp()
+        private fun setupButtonStateObserver() {
+            lifecycleScope.launch {
+                viewModel.isCreateButtonEnabled.collect { isEnabled ->
+                    binding.createNewPlaylistButton.isEnabled = isEnabled
+                    binding.createNewPlaylistButton.backgroundTintList = ColorStateList.valueOf(
+                        if (isEnabled) ContextCompat.getColor(requireContext(), R.color.switch_thumb_active_color)
+                        else ContextCompat.getColor(requireContext(), R.color.text_color_hint)
+                    )
+                }
+            }
         }
-    }
 
-    private fun showExitDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.exit_dialog_title))
-            .setMessage(getString(R.string.exit_dialog_message))
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton(getString(R.string.exit)) { dialog, _ ->
-                dialog.dismiss()
+        private fun checkUnsavedChangesAndNavigate() {
+            if (viewModel.hasUnsavedChanges) {
+                showExitDialog()
+            } else {
                 findNavController().navigateUp()
             }
-            .show()
-    }
+        }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
+        private fun showExitDialog() {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.exit_dialog_title))
+                .setMessage(getString(R.string.exit_dialog_message))
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(getString(R.string.exit)) { dialog, _ ->
+                    dialog.dismiss()
+                    findNavController().navigateUp()
+                }
+                .show()
+        }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+        protected fun showToast(message: String) {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
 
-    companion object {
-        fun newInstance() = NewPlaylistFragment()
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
+
+        companion object {
+            fun newInstance() = NewPlaylistFragment()
+        }
     }
-}

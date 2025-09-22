@@ -4,47 +4,60 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.playlist.domain.PlaylistInteractor
+import com.example.playlistmaker.playlist.data.db.entity.PlaylistEntity
+import com.example.playlistmaker.playlist.domain.PlaylistRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class NewPlaylistViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
+
+open class NewPlaylistViewModel(
+    protected open val playlistRepository: PlaylistRepository
+) : ViewModel() {
 
     private val _isCreateButtonEnabled = MutableStateFlow(false)
     val isCreateButtonEnabled: StateFlow<Boolean> = _isCreateButtonEnabled
 
-    var hasUnsavedChanges = false
-    var coverPath: String? = null
     var playlistName: String = ""
         set(value) {
             field = value
             _isCreateButtonEnabled.value = value.isNotEmpty()
         }
+
     var playlistDescription: String = ""
+    var coverPath: String? = null
+    var hasUnsavedChanges: Boolean = false
 
     fun savePlaylist(
-        name: String,
-        description: String,
         onSuccess: (Long) -> Unit,
         onError: (String) -> Unit
     ) {
-        if (name.isEmpty()) {
+        if (playlistName.isEmpty()) {
             onError("playlist_name_required")
             return
         }
 
         viewModelScope.launch {
             try {
-                val playlistId  = playlistInteractor.createPlaylist(
-                    name = name,
-                    description = description,
-                    coverPath = coverPath
+                val playlistId = playlistRepository.createPlaylist(
+                    PlaylistEntity(
+                        id = 0L,
+                        name = playlistName,
+                        description = playlistDescription,
+                        coverPath = coverPath
+                    )
                 )
+
+                val createdPlaylist = playlistRepository.getPlaylist(playlistId)
+                Log.d("PlaylistCheck", "Created playlist trackIds: ${createdPlaylist?.trackIds}")
+                val trackCount = playlistRepository.getPlaylistTracksCount(createdPlaylist!!)
+                Log.d("PlaylistCheck", "Created playlist track count: $trackCount")
+
                 onSuccess(playlistId)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -53,21 +66,17 @@ class NewPlaylistViewModel(private val playlistInteractor: PlaylistInteractor) :
         }
     }
 
-    fun saveImageToPrivateStorage(uri: Uri, picturesDir: File, requireContext: Context): String? {
-        val filePath = File(picturesDir, "playlist_covers")
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
+    fun saveImageToPrivateStorage(uri: Uri, picturesDir: File, context: Context): String? {
+        val dir = File(picturesDir, "playlist_covers")
+        if (!dir.exists()) dir.mkdirs()
 
-        val file = File(filePath, "playlist_cover_${System.currentTimeMillis()}.jpg")
-
+        val file = File(dir, "playlist_cover_${System.currentTimeMillis()}.jpg")
         return try {
-            val inputStream = requireContext.contentResolver.openInputStream(uri)
-            val outputStream = FileOutputStream(file)
-            BitmapFactory.decodeStream(inputStream)?.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
-            inputStream?.close()
-            outputStream.close()
-
+            context.contentResolver.openInputStream(uri).use { input ->
+                FileOutputStream(file).use { output ->
+                    BitmapFactory.decodeStream(input)?.compress(Bitmap.CompressFormat.JPEG, 90, output)
+                }
+            }
             file.absolutePath
         } catch (e: Exception) {
             null

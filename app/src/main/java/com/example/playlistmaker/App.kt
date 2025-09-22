@@ -8,6 +8,7 @@ import org.koin.core.context.GlobalContext.startKoin
 import com.example.playlistmaker.di.dataModule
 import com.example.playlistmaker.di.databaseModule
 import com.example.playlistmaker.di.interactorModule
+import com.example.playlistmaker.di.mediaModule
 import com.example.playlistmaker.di.repositoryModule
 import com.example.playlistmaker.di.viewModelModule
 
@@ -26,7 +27,7 @@ class App : Application() {
         startKoin {
             androidContext(this@App)
             modules(dataModule,databaseModule,
-                repositoryModule, interactorModule, viewModelModule
+                repositoryModule, interactorModule, viewModelModule, mediaModule
             )
         }
 

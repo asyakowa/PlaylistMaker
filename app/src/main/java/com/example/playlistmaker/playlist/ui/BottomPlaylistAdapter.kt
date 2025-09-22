@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.PlaylistBottomsheetBinding
 import com.example.playlistmaker.playlist.domain.models.Playlist
+
 class BottomPlaylistAdapter(private val showCountGray: Boolean = false) :
     RecyclerView.Adapter<BottomPlaylistViewHolder>() {
 
