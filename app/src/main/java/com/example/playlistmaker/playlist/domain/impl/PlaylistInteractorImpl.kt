@@ -1,102 +1,119 @@
 package com.example.playlistmaker.playlist.domain.impl
 
+import com.example.playlistmaker.media.db.entity.TrackEntity
 import com.example.playlistmaker.playlist.data.db.entity.PlaylistEntity
-import com.example.playlistmaker.playlist.data.db.entity.PlaylistTrackCrossRef
 import com.example.playlistmaker.playlist.domain.AddTrackResult
 import com.example.playlistmaker.playlist.domain.PlaylistInteractor
-import com.example.playlistmaker.playlist.domain.PlaylistRepository
 import com.example.playlistmaker.playlist.domain.models.Playlist
+import com.example.playlistmaker.playlistinfo.domain.PlaylistInfoRepository
 import com.example.playlistmaker.search.domain.models.Track
-import com.google.gson.Gson
+
 
 class PlaylistInteractorImpl(
-    private val repository: PlaylistRepository
+    private val repository: PlaylistInfoRepository
 ) : PlaylistInteractor {
 
-    private val gson = Gson()
-
     override suspend fun createPlaylist(name: String, description: String, coverPath: String?): Long {
-        val entity = PlaylistEntity(
+        val playlistEntity = PlaylistEntity(
+            id = 0,
             name = name,
             description = description,
             coverPath = coverPath,
             trackIds = ""
         )
-        return repository.createPlaylist(entity)
+        return repository.createPlaylist(playlistEntity)
     }
 
-
     override suspend fun updatePlaylist(playlist: Playlist) {
-        val entity = PlaylistEntity(
-            id = playlist.id,
-            name = playlist.name,
-            description = playlist.description,
-            coverPath = playlist.coverPath,
-            trackIds = playlist.trackIds
-                .filter { it.isNotBlank() && it != "[]" }
-                .joinToString(",")
+        repository.updatePlaylist(
+            PlaylistEntity(
+                id = playlist.id,
+                name = playlist.name,
+                description = playlist.description,
+                coverPath = playlist.coverPath,
+                trackIds = playlist.trackIds.joinToString(",")
+            )
         )
-        repository.updatePlaylist(entity)
     }
 
     override suspend fun getPlaylist(id: Long): Playlist? {
-        return repository.getPlaylist(id)?.let { entity ->
-            val trackIdsList = entity.trackIds
-                .split(",")
-                .filter { it.isNotBlank() && it != "[]" }
-
-            Playlist(
-                id = entity.id,
-                name = entity.name,
-                description = entity.description,
-                coverPath = entity.coverPath,
-                trackIds = trackIdsList
-            )
-        }
+        val entity = repository.getPlaylist(id) ?: return null
+        return Playlist(
+            id = entity.id,
+            name = entity.name,
+            description = entity.description,
+            coverPath = entity.coverPath,
+            trackIds = if (entity.trackIds.isNotEmpty()) {
+                entity.trackIds.split(",").filter { it.isNotBlank() }
+            } else {
+                emptyList()
+            }
+        )
     }
 
     override suspend fun getPlaylistTrackCount(playlist: Playlist): Int {
-        return playlist.trackIds
-            .filter { it.isNotBlank() && it != "[]" }
-            .size
+        return playlist.trackIds.size
     }
 
     override suspend fun getAllPlaylists(): List<Playlist> {
         return repository.getAllPlaylists().map { entity ->
-            val trackIdsList = entity.trackIds
-                .split(",")
-                .filter { it.isNotBlank() && it != "[]" }
-
             Playlist(
                 id = entity.id,
                 name = entity.name,
                 description = entity.description,
                 coverPath = entity.coverPath,
-                trackIds = trackIdsList
+                trackIds = if (entity.trackIds.isNotEmpty()) {
+                    entity.trackIds.split(",").filter { it.isNotBlank() }
+                } else {
+                    emptyList()
+                }
             )
         }
     }
 
     override suspend fun addTrackToPlaylist(playlist: Playlist, track: Track): AddTrackResult {
-        val crossRef = PlaylistTrackCrossRef(
-            playlistId = playlist.id,
-            trackId = track.trackId,
-            position = playlist.trackIds.size
-        )
-        repository.addTrackToPlaylist(crossRef)
+        repository.addTrackToPlaylist(track.toEntity(), playlist.id)
 
-        val currentTrackIds = playlist.trackIds
-            .filter { it.isNotBlank() && it != "[]" }
-            .toMutableList()
-
-        if (!currentTrackIds.contains(track.trackId.toString())) {
-            currentTrackIds.add(track.trackId.toString())
+        val updatedIds = playlist.trackIds.toMutableList()
+        if (!updatedIds.contains(track.trackId.toString())) {
+            updatedIds.add(track.trackId.toString())
         }
 
-        val updatedTrackIdsStr = if (currentTrackIds.isEmpty()) "" else currentTrackIds.joinToString(",")
-
-        repository.updatePlaylistTrackIds(playlist.id, updatedTrackIdsStr)
+        repository.updatePlaylistTrackIds(playlist.id, updatedIds.joinToString(","))
 
         return AddTrackResult.Success
     }
+
+    override suspend fun updatePlaylistTrackIds(playlistId: Long, trackIds: String) {
+        repository.updatePlaylistTrackIds(playlistId, trackIds)
+    }
+
+    override suspend fun removeTrackFromPlaylist(trackId: Long) {
+        repository.removeTrackFromPlaylist(trackId)
+    }
+
+    override suspend fun deletePlaylist(playlistId: Long) {
+        repository.deletePlaylist(playlistId)
+    }
+
+    override suspend fun getTracksForPlaylist(playlistId: Long): List<Track> {
+        return repository.getTracksForPlaylist(playlistId)
+    }
+
+    private fun Track.toEntity(): TrackEntity {
+        return TrackEntity(
+            trackId = trackId,
+            trackName = trackName,
+            artistName = artistName,
+            trackTimeMillis = trackTimeMillis,
+            artworkUrl100 = artworkUrl100,
+            collectionName = collectionName,
+            releaseDate = releaseDate,
+            primaryGenreName = primaryGenreName,
+            country = country,
+            isFav = isFav,
+            previewUrl = previewUrl
+        )
+    }
+
 }

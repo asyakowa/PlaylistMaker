@@ -8,17 +8,23 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.PlaylistBottomsheetBinding
 import com.example.playlistmaker.playlist.domain.models.Playlist
 import java.io.File
-
 class BottomPlaylistViewHolder(
     private val binding: PlaylistBottomsheetBinding,
     private val showCountGray: Boolean = false
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private fun formatTrackCount(count: Int): String {
+    private fun getTrackCountString(trackIds: List<String>): String {
+        val count = trackIds
+            .mapNotNull { it.trim().takeIf { it.isNotEmpty() && it != "[]" } }
+            .distinct()
+            .size
+
+        val lastDigit = count % 10
+        val lastTwoDigits = count % 100
         return when {
-            count % 100 in 11..14 -> "$count треков"
-            count % 10 == 1 -> "$count трек"
-            count % 10 in 2..4 -> "$count трека"
+            lastTwoDigits in 11..14 -> "$count треков"
+            lastDigit == 1 -> "$count трек"
+            lastDigit in 2..4 -> "$count трека"
             else -> "$count треков"
         }
     }
@@ -39,9 +45,7 @@ class BottomPlaylistViewHolder(
         }
 
         binding.playlistName.text = item.name
-
-        val trackCount = item.trackIds.filter { it.isNotBlank() }.size
-        binding.playlistTracksCount.text = formatTrackCount(trackCount)
+        binding.playlistTracksCount.text = getTrackCountString(item.trackIds)
 
         val colorRes = if (showCountGray) R.color.counttracks else R.color.counttrackslists
         binding.playlistTracksCount.setTextColor(

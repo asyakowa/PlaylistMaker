@@ -54,20 +54,21 @@
             android:textFontWeight="700"
             android:textSize="24sp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/leftBorder"
             app:layout_constraintTop_toBottomOf="@id/placeholderNewPlaylist"
             tools:text="Best songs 2021" />
 
         <TextView
-            android:id="@+id/yearOfPlaylist"
+            android:id="@+id/descriptionOfPlaylist"
              android:layout_width="0dp"
             android:textColor="@color/playlistName"
             android:textFontWeight="400"
             android:textSize="18sp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
+            app:layout_goneMarginTop="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
             app:layout_constraintTop_toBottomOf="@id/playlistName"
@@ -77,13 +78,13 @@
             android:id="@+id/timeDuration"
              android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:textColor="@color/playlistName"
             android:textFontWeight="400"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@id/dot"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/yearOfPlaylist"
+            app:layout_constraintTop_toBottomOf="@id/descriptionOfPlaylist"
             tools:text="300 минут" />
 
         <ImageView
@@ -111,7 +112,7 @@
             android:id="@+id/ShareButton"
              android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="14dp"
             android:src="@drawable/share"
             android:visibility="visible"
 
@@ -125,7 +126,7 @@
             android:layout_height="24dp"
             android:src="@drawable/more_b"
             app:tint="@color/sharenMenuBtnsColor"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="14dp"
              app:layout_constraintBottom_toBottomOf="@+id/ShareButton"
             app:layout_constraintStart_toEndOf="@id/ShareButton"
             app:layout_constraintTop_toTopOf="@id/ShareButton" />
@@ -141,7 +142,7 @@
         android:background="@drawable/bottom_sheet_bg"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="216dp"
+        app:behavior_peekHeight="228dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
         <View
             android:id="@+id/overlay"
@@ -245,7 +246,7 @@
             android:id="@+id/shareButton"
              android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="@string/share"
+            android:text="@string/shareplaylist"
             android:gravity="center_vertical"
             android:textFontWeight="400"
             android:textColor="@color/shareEditdelete"

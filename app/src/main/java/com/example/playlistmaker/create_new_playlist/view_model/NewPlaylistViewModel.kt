@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.playlist.data.db.entity.PlaylistEntity
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-
 
 open class NewPlaylistViewModel(
     protected open val playlistRepository: PlaylistRepository
@@ -33,7 +31,7 @@ open class NewPlaylistViewModel(
     var coverPath: String? = null
     var hasUnsavedChanges: Boolean = false
 
-    fun savePlaylist(
+    open fun savePlaylist(
         onSuccess: (Long) -> Unit,
         onError: (String) -> Unit
     ) {
@@ -52,12 +50,6 @@ open class NewPlaylistViewModel(
                         coverPath = coverPath
                     )
                 )
-
-                val createdPlaylist = playlistRepository.getPlaylist(playlistId)
-                Log.d("PlaylistCheck", "Created playlist trackIds: ${createdPlaylist?.trackIds}")
-                val trackCount = playlistRepository.getPlaylistTracksCount(createdPlaylist!!)
-                Log.d("PlaylistCheck", "Created playlist track count: $trackCount")
-
                 onSuccess(playlistId)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -66,7 +58,17 @@ open class NewPlaylistViewModel(
         }
     }
 
-    fun saveImageToPrivateStorage(uri: Uri, picturesDir: File, context: Context): String? {
+    open fun saveChanges(
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        savePlaylist(
+            onSuccess = { onSuccess() },
+            onError = onError
+        )
+    }
+
+    open fun saveImageToPrivateStorage(uri: Uri, picturesDir: File, context: Context): String? {
         val dir = File(picturesDir, "playlist_covers")
         if (!dir.exists()) dir.mkdirs()
 

@@ -23,12 +23,12 @@ val viewModelModule = module {
     viewModel{
         SettingsViewModel(get(),get())
     }
-    single { EditPlaylistViewModel(get()) }
+    viewModel { EditPlaylistViewModel(get()) }
 
     viewModel{
         SearchViewModel(get(), get(), get())
     }
-    viewModel { PlaylistInfoViewModel(get(), get()) }
+    viewModel { PlaylistInfoViewModel(get(), get(), get()) }
 
 
     viewModel {

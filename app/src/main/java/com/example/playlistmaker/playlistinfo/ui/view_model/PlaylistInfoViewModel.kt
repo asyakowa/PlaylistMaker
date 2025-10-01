@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.media.db.entity.TrackEntity
 import com.example.playlistmaker.player.domain.toDomainPlaylist
+import com.example.playlistmaker.playlist.data.db.entity.PlaylistTrackCrossRef
+import com.example.playlistmaker.playlist.domain.PlaylistInteractor
 import com.example.playlistmaker.playlist.domain.models.Playlist
 import com.example.playlistmaker.playlistinfo.domain.PlaylistInfoRepository
 import com.example.playlistmaker.search.domain.models.Track
@@ -15,9 +17,9 @@ import kotlinx.coroutines.launch
 
 
 
-class PlaylistInfoViewModel(
-    private val repository: PlaylistInfoRepository,
-    private val gson: Gson
+class PlaylistInfoViewModel(private val playlistInteractor: PlaylistInteractor,
+                            private val repository: PlaylistInfoRepository,
+                            private val gson: Gson
 ) : ViewModel() {
     private val _refreshTrigger = MutableLiveData<Unit>()
     val refreshTrigger: LiveData<Unit> = _refreshTrigger
@@ -37,19 +39,26 @@ class PlaylistInfoViewModel(
                 val loadedTracks = repository.getTracksForPlaylist(playlist.id)
                 _tracks.postValue(loadedTracks)
                 val trackIds = playlist.trackIds.mapNotNull { it.toIntOrNull() }
+                Log.d("PlaylistDebug", "Loaded tracks: ${loadedTracks.map { it.trackName }}")
+
                 val tracksInDb = repository.getTracksForPlaylist(playlist.id)
+                Log.d("PlaylistDebug", "Loaded tracks: ${loadedTracks.map { it.trackName }}")
+
                 Log.d("Debug", "trackIds in playlist: $trackIds")
                 Log.d("Debug", "tracks loaded from DB: $tracksInDb")
             }
         }
     }
-    fun addTrackToPlaylist(playlistId: Long, track: TrackEntity) {
+    fun addTrackToPlaylist(playlist: Playlist, track: Track) {
         viewModelScope.launch {
-            repository.addTrackToPlaylist(playlistId, track)
-             val refreshedTracks = repository.getTracksForPlaylist(playlistId)
+            playlistInteractor.addTrackToPlaylist(playlist, track)
+            val refreshedTracks = repository.getTracksForPlaylist(playlist.id)
             _tracks.postValue(refreshedTracks)
         }
     }
+
+
+
     fun forceRefresh() {
         _refreshTrigger.postValue(Unit)
     }

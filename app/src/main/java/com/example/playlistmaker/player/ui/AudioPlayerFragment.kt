@@ -170,7 +170,7 @@ fun Track.toTrackEntity() = TrackEntity(
         playlistsAdapter.onItemClick = { playlist ->
             if (!playlist.trackIds.contains(track.trackId.toString())) {
 
-                playlistInfoViewModel.addTrackToPlaylist(playlist.id, track.toTrackEntity())
+                playlistInfoViewModel.addTrackToPlaylist(playlist, track)
 
                 hidePlaylistsBottomSheet()
                 showToast(getString(R.string.track_in_playlist) + " ${playlist.name}")

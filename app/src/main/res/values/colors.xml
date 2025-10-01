@@ -74,4 +74,10 @@
     <color name="noTracks">#1A1B22</color>
     <color name="colorCountTracks">#AEAFB4</color>
     <color name="bbColor">#1A1B22</color>
+    <color name="bbColorr">#1A1B22</color>
+    <color name="bcolor">#1A1B22</color>
+
+    <color name="textcolor">#1A1B22</color>
+    <color name="bbColorr2">#1A1B22</color>
+
 </resources>

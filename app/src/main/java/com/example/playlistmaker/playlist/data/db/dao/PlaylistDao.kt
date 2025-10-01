@@ -52,7 +52,17 @@ interface PlaylistDao {
     @Query("DELETE FROM playlists WHERE id = :playlistId")
     suspend fun deletePlaylistById(playlistId: Long)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlaylist(playlist: PlaylistEntity): Long
 
+    @Update
+    suspend fun updatePlaylist(playlist: PlaylistEntity): Int
+
+    @Query("SELECT * FROM playlists ORDER BY name")
+    suspend fun getAllPlaylists(): List<PlaylistEntity>
+
+    @Query("UPDATE playlists SET trackIds = :trackIds WHERE id = :playlistId")
+    suspend fun updatePlaylistTrackIds(playlistId: Long, trackIds: String)
     @Query("""
         UPDATE playlists 
         SET name = :name, description = :description, coverPath = :coverPath, trackIds = :trackIds 

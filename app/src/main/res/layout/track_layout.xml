@@ -38,7 +38,7 @@
 
             <TextView
                 android:maxLines="1"
-                android:maxLength="44"
+                android:maxLength="42"
                 android:textFontWeight="400"
                 tools:text="Singer"
                 android:id="@+id/singerOfTrack"

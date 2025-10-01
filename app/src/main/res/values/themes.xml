@@ -1,7 +1,8 @@
+<resources>
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-<!-- Base application theme. -->
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorControlNormal">@color/black</item>
 
-</style>
+        <item name="toolbarIcon">@drawable/back</item>
+    </style>
 </resources>

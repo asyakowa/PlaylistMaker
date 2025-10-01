@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Space
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -246,13 +247,11 @@ class PlaylistInfoFragment : Fragment() {
         message: String,
         onConfirm: () -> Unit,
         widthDp: Int = 280,
-        heightDp: Int = 143,
-        offsetYdp: Int = 338
-
+        heightDp: Int = 143
     ) {
         val messageContainer = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(15.dpToPx(), 24.dpToPx(), 24.dpToPx(), 14.dpToPx())
+            setPadding(15.dpToPx(), 24.dpToPx(), 24.dpToPx(), 0)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -264,11 +263,18 @@ class PlaylistInfoFragment : Fragment() {
             setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             textSize = 16f
             typeface = ResourcesCompat.getFont(requireContext(), R.font.ys_display_regular)
-            gravity = Gravity.LEFT
-            setPadding(0, 0, 0, 16.dpToPx())
+            gravity = Gravity.START
         }
 
         messageContainer.addView(messageText)
+
+        val space = Space(requireContext()).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                44.dpToPx() // регулируем отступ
+            )
+        }
+        messageContainer.addView(space)
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setView(messageContainer)
@@ -302,7 +308,15 @@ class PlaylistInfoFragment : Fragment() {
 
         dialog.window?.decorView?.setPadding(0, 0, 0, 0)
         dialog.window?.setGravity(Gravity.CENTER)
+        dialog.window?.apply {
+            setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL)
+            val params = attributes
+            params.y = 338.dpToPx()
+            attributes = params
+        }
+
     }
+
 
     private fun Int.dpToPx(): Int =
         (this * resources.displayMetrics.density).toInt()
@@ -326,9 +340,9 @@ class PlaylistInfoFragment : Fragment() {
         return StringBuilder().apply {
             append("${playlist?.name}\n")
             append("${playlist?.description}\n")
-            append("[${tracks.size}] треков\n\n")
+            append("${getTrackCountString(tracks.size)}\n\n")
             tracks.forEachIndexed { index, track ->
-                append("${index + 1}. ${track.artistName} - ${track.trackName} (${track.trackTimeMillis})\n")
+                append("${index + 1}. ${track.artistName} - ${track.trackName} (${formatTrackDuration(track.trackTimeMillis)})\n")
             }
         }.toString()
     }
@@ -341,11 +355,26 @@ class PlaylistInfoFragment : Fragment() {
         }
         startActivity(Intent.createChooser(sendIntent, null))
     }
+    private fun formatTrackDuration(millis: Long): String {
+        val minutes = (millis / 1000) / 60
+        val seconds = (millis / 1000) % 60
+        return String.format("%d:%02d", minutes, seconds)
+    }
 
     private fun bindPlaylist(playlist: Playlist) {
         binding.playlistName.text = playlist.name
-        binding.yearOfPlaylist.text = playlist.description ?: ""
-        binding.trackCount.text = getTrackCountString(playlist.trackIds.size)
+
+        val hasDescription = !playlist.description.isNullOrBlank()
+        if (hasDescription) {
+            binding.descriptionOfPlaylist.text = playlist.description
+            binding.descriptionOfPlaylist.visibility = View.VISIBLE
+        } else {
+            binding.descriptionOfPlaylist.visibility = View.GONE
+        }
+
+        binding.trackCount.text = playlist.getTrackCountString()
+        binding.playlistTracksCount.text = playlist.getTrackCountString()
+
 
         if (!playlist.coverPath.isNullOrEmpty()) {
             Glide.with(binding.placeholderNewPlaylist.context)
@@ -359,6 +388,7 @@ class PlaylistInfoFragment : Fragment() {
 
         binding.playlistNameBsh.text = playlist.name
         binding.playlistTracksCount.text = getTrackCountString(playlist.trackIds.size)
+
         if (!playlist.coverPath.isNullOrEmpty()) {
             Glide.with(binding.playlistCover.context)
                 .load(playlist.coverPath)
@@ -367,7 +397,25 @@ class PlaylistInfoFragment : Fragment() {
         } else {
             binding.playlistCover.setImageResource(R.drawable.placeholder4)
         }
+
+        binding.root.post {
+            adjustBottomSheetPeekHeight(hasDescription)
+        }
     }
+
+    private fun adjustBottomSheetPeekHeight(hasDescription: Boolean) {
+        tracksBottomSheetBehavior?.let { behavior ->
+            val basePeekHeight = 228.dpToPx() // стандартная высота
+            val descriptionHeight = if (hasDescription) {
+                binding.descriptionOfPlaylist.height
+            } else {
+                -10.dpToPx()
+            }
+            behavior.peekHeight = basePeekHeight - descriptionHeight
+        }
+    }
+
+
 
     fun getTrackCountString(count: Int): String {
         val lastDigit = count % 10
