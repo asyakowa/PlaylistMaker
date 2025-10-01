@@ -9,7 +9,7 @@ import com.example.playlistmaker.playlist.data.db.entity.PlaylistEntity
 import com.example.playlistmaker.playlist.data.db.entity.PlaylistTrackCrossRef
 
 @Database(
-    version = 4,
+    version = 5,
     entities = [
         TrackEntity::class,
         PlaylistEntity::class,

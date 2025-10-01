@@ -16,9 +16,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentAudiopleerBinding
+import com.example.playlistmaker.media.db.entity.TrackEntity
 import com.example.playlistmaker.player.ui.model.TrackScreenState
 import com.example.playlistmaker.player.ui.view_model.AudioPlayerViewModel
 import com.example.playlistmaker.playlist.ui.BottomPlaylistAdapter
+import com.example.playlistmaker.playlistinfo.ui.view_model.PlaylistInfoViewModel
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
@@ -30,6 +32,7 @@ class AudioPlayerFragment : Fragment() {
     companion object {
         const val KEY_CHOSEN_TRACK = "chosen_track"
     }
+    private val playlistInfoViewModel: PlaylistInfoViewModel by viewModel()
 
     private var _binding: FragmentAudiopleerBinding? = null
     private val binding get() = _binding!!
@@ -149,12 +152,29 @@ class AudioPlayerFragment : Fragment() {
             playlistsAdapter.notifyDataSetChanged()
         }
 
+
+fun Track.toTrackEntity() = TrackEntity(
+    trackId = trackId,
+    trackName = trackName,
+    artistName = artistName,
+    trackTimeMillis = trackTimeMillis,
+    artworkUrl100 = artworkUrl100,
+    collectionName = collectionName ?: "",
+    releaseDate = releaseDate,
+    primaryGenreName = primaryGenreName,
+    country = country,
+    isFav = isFav,
+    previewUrl = previewUrl
+)
+
         playlistsAdapter.onItemClick = { playlist ->
             if (!playlist.trackIds.contains(track.trackId.toString())) {
-                playlist.trackIds = playlist.trackIds.toMutableList().apply { add(track.trackId.toString()) }
-                viewModel.updatePlaylist(playlist)
+
+                playlistInfoViewModel.addTrackToPlaylist(playlist, track)
+
                 hidePlaylistsBottomSheet()
                 showToast(getString(R.string.track_in_playlist) + " ${playlist.name}")
+
             } else {
                 showToast(getString(R.string.track_already_in_playlist) + " ${playlist.name}")
             }

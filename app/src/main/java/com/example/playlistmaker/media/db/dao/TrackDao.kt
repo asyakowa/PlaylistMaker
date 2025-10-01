@@ -22,10 +22,17 @@ interface TrackDao {
 
     @Query("SELECT * FROM track_table ORDER BY rowid DESC")
     fun getFavTracks(): Flow<List<TrackEntity>>
+    @Query("SELECT * FROM track_table WHERE trackId = :trackId")
+    suspend fun getTrackById(trackId: Int): TrackEntity?
+
 
     @Query("SELECT trackId FROM track_table")
     fun getFavById(): Flow<List<Int>>
+    @Query("SELECT * FROM track_table WHERE trackId IN (:ids)")
+    suspend fun getTracksByIds(ids: List<Int>): List<TrackEntity>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTrack(track: TrackEntity)
 }
 
 

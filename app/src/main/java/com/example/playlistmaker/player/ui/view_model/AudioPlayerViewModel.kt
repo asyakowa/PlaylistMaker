@@ -124,7 +124,7 @@ class AudioPlayerViewModel(
             while (audioplayer.isPlaying()) {
                 delay(TIMER_DELAY)
                 val currentPosition = audioplayer.getCurrentPositionSec()
-                progress = formatTime(currentPosition)
+                progress = TimeFormatter.formatTime(currentPosition)
                 emitContentState()
             }
         }
@@ -136,7 +136,7 @@ class AudioPlayerViewModel(
 
     private fun emitContentState() {
         val track = currentTrack ?: return
-        val duration = formatTime(track.trackTimeMillis / 1000f)
+        val duration = TimeFormatter.formatTime(track.trackTimeMillis / 1000f)
         screenStateLiveData.postValue(
             TrackScreenState.Content(
                 trackModel = track,

@@ -57,7 +57,21 @@
     <color name="bscolor">#FFFFFF</color>
     <color name="counttracks">#AEAFB4</color>
     <color name="counttrackslists">#FFFFFF</color>
-
-
+    <color name="playlistName">#1A1B22</color>
+    <color name="sharenMenuBtnsColor">#1A1B22</color>
+    <color name="playlistInfoBackgtoundColor">#E6E8EB</color>
+    <color name="view2">#FFFFFF</color>
+    <color name="bs">#1A1B22</color>
+    <color name="shareEditdelete">#FFFFFF</color>
+    <color name="yeaNoColor">#3772E7</color>
+    <color name="deletePlaylistColor">#FFFFFF</color>
+    <color name="dialogBackgroundColor">#FFFFFF</color>
+    <color name="noTracks">#FFFFFF</color>
+    <color name="colorCountTracks">#FFFFFF</color>
+    <color name="bbColor">#1A1B22</color>
+    <color name="bbColorr">#FFFFFF</color>
+    <color name="bcolor">#1A1B22</color>
+    <color name="textcolor">#1A1B22</color>
+    <color name="bbColorr2">#FFFFFF</color>
 
 </resources>

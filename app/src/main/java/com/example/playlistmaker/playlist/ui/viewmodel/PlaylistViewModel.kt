@@ -1,5 +1,6 @@
 package com.example.playlistmaker.playlist.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,12 @@ class PlaylistViewModel(
                  val playlists: List<Playlist> = interactor.getAllPlaylists()
 
                  val domainList: List<Playlist> = interactor.getAllPlaylists()
+                playlists.forEach { playlist ->
+                    Log.d(
+                        "PlaylistCheck",
+                        "Playlist: ${playlist.name}, trackIds: ${playlist.trackIds}"
+                    )
+                }
 
                 _playlists.postValue(domainList)
             } catch (e: Exception) {

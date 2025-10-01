@@ -15,13 +15,23 @@ fun Playlist.toEntityy(gson: Gson): PlaylistEntity = PlaylistEntity(
     trackIds = gson.toJson(trackIds)
 )
 
-fun PlaylistEntity.toDomain(gson: Gson): Playlist = Playlist(
-    id = id,
-    name = name,
-    description = description,
-    coverPath = coverPath,
-    trackIds = gson.fromJson(trackIds, Array<String>::class.java).toList()
-)
+fun PlaylistEntity.toDomain(gson: Gson): Playlist {
+    val trackIdsList = try {
+        gson.fromJson(trackIds, Array<String>::class.java).toList()
+    } catch (e: Exception) {
+        emptyList()
+    }
+
+    return Playlist(
+        id = id,
+        name = name,
+        description = description,
+        coverPath = coverPath,
+        trackIds = trackIdsList,
+//        trackCount = trackIdsList.size
+    )
+}
+
 
 // Track ↔ PlaylistTrackEntity
 fun Track.toEntityy(): PlaylistTrackEntity = PlaylistTrackEntity(

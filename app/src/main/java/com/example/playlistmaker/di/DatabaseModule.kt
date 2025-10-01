@@ -17,7 +17,7 @@ val databaseModule = module {
             AppDatabase::class.java,
             "playlist_db"
         )
-            .fallbackToDestructiveMigration()
+//            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -28,6 +28,6 @@ val databaseModule = module {
     single { Gson() }
 
 
-    single<PlaylistRepository> { PlaylistRepositoryImpl(get(), get()) } // get() = PlaylistDao + Gson
+//    single<PlaylistRepository> { PlaylistRepositoryImpl(get(), get()) } // get() = PlaylistDao + Gson
 }
 
